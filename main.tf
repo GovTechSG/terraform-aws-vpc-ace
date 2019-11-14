@@ -29,6 +29,11 @@ locals {
     "${cidrsubnet(local.manage_cidr_block, lookup(var.private_new_bits, var.private_subnet_new_bits_size), num)}"
   ]
 
+  secondary_private_subnets = [
+    for num in var.secondary_private_subnet_net_nums :
+    "${cidrsubnet(local.manage_cidr_block, lookup(var.private_new_bits, var.secondary_private_subnet_new_bits_size), num)}"
+  ]
+
   database_subnets = [
     for num in var.database_subnet_net_nums :
     "${cidrsubnet(local.manage_cidr_block, lookup(var.database_new_bits, var.database_subnet_new_bits_size), num)}"
@@ -82,7 +87,7 @@ module "vpc" {
     "AccessType" = "internet ingress/egress"
   }
 
-  private_subnets = "${local.private_subnets}"
+  private_subnets = concat(local.private_subnets, local.secondary_private_subnets)
 
   private_subnet_tags = "${merge(
     var.eks_cluster_tags,

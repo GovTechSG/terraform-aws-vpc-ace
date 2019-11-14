@@ -56,6 +56,12 @@ variable "private_subnet_net_nums" {
   type        = list
 }
 
+variable "secondary_private_subnet_net_nums" {
+  description = "list of netnums to use for private"
+  type        = list
+  default     = []
+}
+
 variable "private_new_bits" {
   description = "New bits of private subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
   type        = map
@@ -70,6 +76,12 @@ variable "private_new_bits" {
 }
 
 variable "private_subnet_new_bits_size" {
+  description = "Bit size to use"
+  type        = string
+  default     = "small"
+}
+
+variable "secondary_private_subnet_new_bits_size" {
   description = "Bit size to use"
   type        = string
   default     = "small"
