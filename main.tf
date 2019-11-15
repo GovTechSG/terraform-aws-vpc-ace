@@ -134,7 +134,7 @@ module "vpc" {
   external_nat_ip_ids                = "${aws_eip.nat.*.id}"
 
   # external services
-  enable_s3_endpoint = true
+  enable_s3_endpoint = var.enable_s3_endpoint
 
   # service discovery stuff
   enable_dns_hostnames = true
@@ -158,6 +158,7 @@ data "aws_subnet" "private_subnet_by_az" {
 }
 
 resource "aws_vpc_endpoint" "ec2" {
+  count = var.create_private_endpoints ? 0 : 1
   vpc_id            = module.vpc.vpc_id
   service_name      = data.aws_vpc_endpoint_service.ec2.service_name
   vpc_endpoint_type = "Interface"
@@ -176,6 +177,7 @@ data "aws_vpc_endpoint_service" "ecr_api" {
 }
 
 resource "aws_vpc_endpoint" "ecr_api" {
+  count = var.create_private_endpoints ? 0 : 1
   vpc_id            = module.vpc.vpc_id
   service_name      = data.aws_vpc_endpoint_service.ecr_api.service_name
   vpc_endpoint_type = "Interface"
@@ -193,6 +195,7 @@ data "aws_vpc_endpoint_service" "ecr_dkr" {
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
+  count = var.create_private_endpoints ? 0 : 1
   vpc_id            = module.vpc.vpc_id
   service_name      = data.aws_vpc_endpoint_service.ecr_dkr.service_name
   vpc_endpoint_type = "Interface"
