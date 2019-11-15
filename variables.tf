@@ -42,6 +42,7 @@ variable "public_new_bits" {
     large   = "5"
     xlarge  = "4"
     xxlarge = "3"
+    xxxlarge = "2"
   }
 }
 
@@ -72,6 +73,7 @@ variable "private_new_bits" {
     large   = "5"
     xlarge  = "4"
     xxlarge = "3"
+    xxxlarge = "2"
   }
 }
 
@@ -102,6 +104,7 @@ variable "intranet_new_bits" {
     large   = "5"
     xlarge  = "4"
     xxlarge = "3"
+    xxxlarge = "2"
   }
 }
 
@@ -126,6 +129,7 @@ variable "database_new_bits" {
     large   = "5"
     xlarge  = "4"
     xxlarge = "3"
+    xxxlarge = "2"
   }
 }
 
