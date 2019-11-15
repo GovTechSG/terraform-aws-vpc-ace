@@ -66,6 +66,11 @@ output "vpc_private_route_table_ids" {
   value       = "${module.vpc.private_route_table_ids}"
 }
 
+output "private_subnet_per_az" {
+  description = "List of private subnets, 1 per AZ which are to be linked to private endpoints"
+  value       = "${data.aws_subnet.private_subnet_by_az}"
+}
+
 #
 # -----------------------------------------------------------------------------
 # database subnets

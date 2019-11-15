@@ -70,6 +70,12 @@ variable "private_subnet_net_nums" {
   type        = list
 }
 
+variable "private_subnet_per_az_for_private_endpoints" {
+  description = "list of private subnets that you want to join to a private endpoint"
+  type        = list
+  default     = []
+}
+
 variable "secondary_private_subnet_net_nums" {
   description = "list of netnums to use for private"
   type        = list

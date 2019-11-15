@@ -164,7 +164,7 @@ resource "aws_vpc_endpoint" "ec2" {
   vpc_endpoint_type = "Interface"
 
   security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(data.aws_subnet.private_subnet_by_az.*.id)
+  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
   private_dns_enabled = true
   //  var.ec2_endpoint_private_dns_enabled
 }
@@ -183,7 +183,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   vpc_endpoint_type = "Interface"
 
   security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(data.aws_subnet.private_subnet_by_az.*.id)
+  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
   private_dns_enabled = true
 }
 
@@ -201,7 +201,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_endpoint_type = "Interface"
 
   security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(data.aws_subnet.private_subnet_by_az.*.id)
+  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
   private_dns_enabled = true
 }
 
