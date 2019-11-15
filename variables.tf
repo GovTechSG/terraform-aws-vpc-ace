@@ -15,6 +15,18 @@ variable "cidr_name" {
   default     = ""
 }
 
+variable "create_private_endpoints" {
+  description = "Whether to create private endpoints for s3,ec2 etc"
+  type        = bool
+  default     = true
+}
+
+variable "enable_s3_endpoint" {
+  description = "Whether to create private s3 endpoint"
+  type        = bool
+  default     = true
+}
+
 variable "vpc_id" {
   description = "VPC id for use in cases where VPC was already created and you would like to reuse it with this module. Not required if create_vpc = true"
   type        = string
