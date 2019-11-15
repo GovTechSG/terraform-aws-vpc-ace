@@ -189,17 +189,17 @@ output "database_network_acl_id" {
 
 output "ec2_endpoint" {
   description = "ID of ec2 endpoint"
-  value       = "${aws_vpc_endpoint.ec2.id}"
+  value       = "${aws_vpc_endpoint.ec2[0].id}"
 }
 
 output "ecr_endpoint" {
   description = "ID of ecr endpoint"
-  value       = "${aws_vpc_endpoint.ecr_api.id}"
+  value       = "${aws_vpc_endpoint.ecr_api[0].id}"
 }
 
 output "ecr_dkr_endpoint" {
   description = "ID of ecr_dkr endpoint"
-  value       = "${aws_vpc_endpoint.ecr_dkr.id}"
+  value       = "${aws_vpc_endpoint.ecr_dkr[0].id}"
 }
 
 output "s3_endpoint" {
