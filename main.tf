@@ -64,11 +64,12 @@ resource "aws_eip" "nat" {
 # virtual private cloud creator
 module "vpc" {
   //source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v2.7.0"
-  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v2.7.0"
+  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v2.7.0-cidr.1"
 
   # meta data
   name                  = var.vpc_name
   cidr                  = var.vpc_cidr
+  cidr_name             = var.cidr_name
   secondary_cidr_blocks = var.secondary_cidr_blocks
 
   # availability & network topology
