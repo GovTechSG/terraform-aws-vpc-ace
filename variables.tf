@@ -38,6 +38,7 @@ variable "public_new_bits" {
   default = {
     xsmall  = "9"
     small   = "8"
+    xmedium  = "7"
     medium  = "6"
     large   = "5"
     xlarge  = "4"
@@ -69,6 +70,7 @@ variable "private_new_bits" {
   default = {
     xsmall  = "9"
     small   = "8"
+    xmedium  = "7"
     medium  = "6"
     large   = "5"
     xlarge  = "4"
@@ -100,6 +102,7 @@ variable "intranet_new_bits" {
   default = {
     xsmall  = "9"
     small   = "8"
+    xmedium  = "7"
     medium  = "6"
     large   = "5"
     xlarge  = "4"
@@ -125,6 +128,7 @@ variable "database_new_bits" {
   default = {
     xsmall  = "9"
     small   = "8"
+    xmedium  = "7"
     medium  = "6"
     large   = "5"
     xlarge  = "4"
