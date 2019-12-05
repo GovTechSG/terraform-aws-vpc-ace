@@ -344,7 +344,7 @@ resource "aws_network_acl_rule" "public_outbound_allow_all_rule" {
 resource "aws_network_acl_rule" "public_inbound_ssh_rule_deny" {
   network_acl_id = "${aws_network_acl.public.id}"
   cidr_block     = "0.0.0.0/0"
-  rule_number    = 141
+  rule_number    = 139
   protocol       = "tcp"
   from_port      = 22
   to_port        = 22
@@ -353,7 +353,7 @@ resource "aws_network_acl_rule" "public_inbound_ssh_rule_deny" {
 
 resource "aws_network_acl_rule" "public_outbound_ssh_rule_deny" {
   network_acl_id = "${aws_network_acl.public.id}"
-  rule_number    = 181
+  rule_number    = 139
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 22
