@@ -930,7 +930,7 @@ resource "aws_network_acl_rule" "database" {
   rule_action    = "deny"
   egress         = true
 }
-t
+
 resource "aws_network_acl_rule" "database_inbound_allow_443_rule" {
   network_acl_id = "${aws_network_acl.database.id}"
   rule_number    = 110
