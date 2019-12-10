@@ -362,6 +362,27 @@ resource "aws_network_acl_rule" "public_outbound_ssh_rule_deny" {
   egress         = true
 }
 
+resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny" {
+  network_acl_id = "${aws_network_acl.public.id}"
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 105
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+}
+
+resource "aws_network_acl_rule" "public_outbound_rdp_rule_deny" {
+  network_acl_id = "${aws_network_acl.public.id}"
+  rule_number    = 105
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+  egress         = true
+}
+
 resource "aws_network_acl_rule" "public_inbound_ssh_rule" {
   network_acl_id = "${aws_network_acl.public.id}"
   rule_number    = 120
@@ -492,6 +513,48 @@ resource "aws_network_acl_rule" "private_outbound_ssh_rule_secondary_cidr" {
   from_port      = 22
   to_port        = 22
   rule_action    = "allow"
+  egress         = true
+}
+
+resource "aws_network_acl_rule" "private_inbound_ssh_rule_deny" {
+  network_acl_id = "${aws_network_acl.private.id}"
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 139
+  protocol       = "tcp"
+  from_port      = 22
+  to_port        = 22
+  rule_action    = "deny"
+}
+
+resource "aws_network_acl_rule" "private_outbound_ssh_rule_deny" {
+  network_acl_id = "${aws_network_acl.private.id}"
+  rule_number    = 139
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 22
+  to_port        = 22
+  rule_action    = "deny"
+  egress         = true
+}
+
+resource "aws_network_acl_rule" "private_inbound_rdp_rule_deny" {
+  network_acl_id = "${aws_network_acl.private.id}"
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 105
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+}
+
+resource "aws_network_acl_rule" "private_outbound_rdp_rule_deny" {
+  network_acl_id = "${aws_network_acl.private.id}"
+  rule_number    = 105
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
   egress         = true
 }
 
@@ -672,6 +735,28 @@ resource "aws_network_acl_rule" "private_outbound_allow_udp_openvpn" {
 ###########################
 # Intranet subnet ACL
 ###########################
+
+resource "aws_network_acl_rule" "intra_inbound_rdp_rule_deny" {
+  network_acl_id = "${aws_network_acl.intra.id}"
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 105
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+}
+
+resource "aws_network_acl_rule" "intra_outbound_rdp_rule_deny" {
+  network_acl_id = "${aws_network_acl.intra.id}"
+  rule_number    = 105
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+  egress         = true
+}
+
 resource "aws_network_acl_rule" "intranet_inbound_allow_443_rule" {
   network_acl_id = "${aws_network_acl.intra.id}"
   rule_number    = 110
@@ -734,6 +819,27 @@ resource "aws_network_acl_rule" "intranet_outbound_ssh_rule_secondary_cidr" {
   from_port      = 22
   to_port        = 22
   rule_action    = "allow"
+  egress         = true
+}
+
+resource "aws_network_acl_rule" "intra_inbound_ssh_rule_deny" {
+  network_acl_id = "${aws_network_acl.intra.id}"
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 139
+  protocol       = "tcp"
+  from_port      = 22
+  to_port        = 22
+  rule_action    = "deny"
+}
+
+resource "aws_network_acl_rule" "intra_outbound_ssh_rule_deny" {
+  network_acl_id = "${aws_network_acl.intra.id}"
+  rule_number    = 139
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 22
+  to_port        = 22
+  rule_action    = "deny"
   egress         = true
 }
 
@@ -804,6 +910,27 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_udp_secondary_cidr" {
 ###########################
 # Database subnet ACL
 ###########################
+resource "aws_network_acl_rule" "database_inbound_rdp_rule_deny" {
+  network_acl_id = "${aws_network_acl.database.id}"
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 105
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+}
+
+resource "aws_network_acl_rule" "database" {
+  network_acl_id = "${aws_network_acl.database.id}"
+  rule_number    = 105
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+  egress         = true
+}
+t
 resource "aws_network_acl_rule" "database_inbound_allow_443_rule" {
   network_acl_id = "${aws_network_acl.database.id}"
   rule_number    = 110
@@ -823,6 +950,27 @@ resource "aws_network_acl_rule" "database_outbound_allow_443_rule" {
   to_port        = 443
   rule_action    = "allow"
   egress         = "true"
+}
+
+resource "aws_network_acl_rule" "database_inbound_ssh_rule_deny" {
+  network_acl_id = "${aws_network_acl.database.id}"
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 139
+  protocol       = "tcp"
+  from_port      = 22
+  to_port        = 22
+  rule_action    = "deny"
+}
+
+resource "aws_network_acl_rule" "database_outbound_ssh_rule_deny" {
+  network_acl_id = "${aws_network_acl.database.id}"
+  rule_number    = 139
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 22
+  to_port        = 22
+  rule_action    = "deny"
+  egress         = true
 }
 
 resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule" {
