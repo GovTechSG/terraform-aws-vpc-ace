@@ -496,7 +496,7 @@ resource "aws_network_acl_rule" "private_outbound_nfs_111_rule" {
 resource "aws_network_acl_rule" "private_inbound_nfs_111_rule_secondary_cidr" {
   count          = length(var.secondary_cidr_blocks)
   network_acl_id = "${aws_network_acl.private.id}"
-  rule_number    = 115 + count.index
+  rule_number    = 116 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 111
@@ -507,7 +507,7 @@ resource "aws_network_acl_rule" "private_inbound_nfs_111_rule_secondary_cidr" {
 resource "aws_network_acl_rule" "private_outbound_nfs_111_rule_secondary_cidr" {
   count          = length(var.secondary_cidr_blocks)
   network_acl_id = "${aws_network_acl.private.id}"
-  rule_number    = 115 + count.index
+  rule_number    = 116 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 111
@@ -867,7 +867,7 @@ resource "aws_network_acl_rule" "intranet_outbound_nfs_111_rule" {
 resource "aws_network_acl_rule" "intranet_inbound_nfs_111_rule_secondary_cidr" {
   count          = length(var.secondary_cidr_blocks)
   network_acl_id = "${aws_network_acl.intra.id}"
-  rule_number    = 115 + count.index
+  rule_number    = 116 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 111
@@ -878,7 +878,7 @@ resource "aws_network_acl_rule" "intranet_inbound_nfs_111_rule_secondary_cidr" {
 resource "aws_network_acl_rule" "intranet_outbound_nfs_111_rule_secondary_cidr" {
   count          = length(var.secondary_cidr_blocks)
   network_acl_id = "${aws_network_acl.intra.id}"
-  rule_number    = 115 + count.index
+  rule_number    = 116 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 111
