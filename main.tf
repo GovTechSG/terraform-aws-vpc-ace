@@ -476,7 +476,7 @@ resource "aws_network_acl_rule" "private_inbound_nfs_111_rule" {
   network_acl_id = "${aws_network_acl.private.id}"
   rule_number    = 115
   cidr_block     = module.vpc.vpc_cidr_block
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 111
   to_port        = 111
   rule_action    = "allow"
@@ -486,7 +486,7 @@ resource "aws_network_acl_rule" "private_outbound_nfs_111_rule" {
   network_acl_id = "${aws_network_acl.private.id}"
   rule_number    = 115
   cidr_block     = module.vpc.vpc_cidr_block
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 111
   to_port        = 111
   rule_action    = "allow"
@@ -498,7 +498,7 @@ resource "aws_network_acl_rule" "private_inbound_nfs_111_rule_secondary_cidr" {
   network_acl_id = "${aws_network_acl.private.id}"
   rule_number    = 116 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 111
   to_port        = 111
   rule_action    = "allow"
@@ -509,7 +509,7 @@ resource "aws_network_acl_rule" "private_outbound_nfs_111_rule_secondary_cidr" {
   network_acl_id = "${aws_network_acl.private.id}"
   rule_number    = 116 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 111
   to_port        = 111
   rule_action    = "allow"
@@ -694,8 +694,8 @@ resource "aws_network_acl_rule" "private_inbound_allow_all_ephemeral_rule" {
   network_acl_id = "${aws_network_acl.private.id}"
   rule_number    = 140
   cidr_block     = "0.0.0.0/0"
-  protocol       = "all"
-  from_port      = 1024
+  protocol       = "tcp"
+  from_port      = 700
   to_port        = 65535
   rule_action    = "allow"
 }
@@ -704,8 +704,8 @@ resource "aws_network_acl_rule" "private_outbound_allow_all_ephemeral_rule" {
   network_acl_id = "${aws_network_acl.private.id}"
   rule_number    = 140
   cidr_block     = "0.0.0.0/0"
-  protocol       = "all"
-  from_port      = 1024
+  protocol       = "tcp"
+  from_port      = 700
   to_port        = 65535
   rule_action    = "allow"
   egress         = "true"
@@ -847,7 +847,7 @@ resource "aws_network_acl_rule" "intranet_inbound_nfs_111_rule" {
   network_acl_id = "${aws_network_acl.intra.id}"
   rule_number    = 115
   cidr_block     = module.vpc.vpc_cidr_block
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 111
   to_port        = 111
   rule_action    = "allow"
@@ -857,7 +857,7 @@ resource "aws_network_acl_rule" "intranet_outbound_nfs_111_rule" {
   network_acl_id = "${aws_network_acl.intra.id}"
   rule_number    = 115
   cidr_block     = module.vpc.vpc_cidr_block
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 111
   to_port        = 111
   rule_action    = "allow"
@@ -869,7 +869,7 @@ resource "aws_network_acl_rule" "intranet_inbound_nfs_111_rule_secondary_cidr" {
   network_acl_id = "${aws_network_acl.intra.id}"
   rule_number    = 116 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 111
   to_port        = 111
   rule_action    = "allow"
@@ -880,7 +880,7 @@ resource "aws_network_acl_rule" "intranet_outbound_nfs_111_rule_secondary_cidr" 
   network_acl_id = "${aws_network_acl.intra.id}"
   rule_number    = 116 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 111
   to_port        = 111
   rule_action    = "allow"
@@ -935,8 +935,8 @@ resource "aws_network_acl_rule" "intra_inbound_allow_all_ephemeral_rule" {
   network_acl_id = "${aws_network_acl.intra.id}"
   rule_number    = 140
   cidr_block     = "0.0.0.0/0"
-  protocol       = "all"
-  from_port      = 1024
+  protocol       = "tcp"
+  from_port      = 700
   to_port        = 65535
   rule_action    = "allow"
 }
@@ -945,8 +945,8 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule" {
   network_acl_id = "${aws_network_acl.intra.id}"
   rule_number    = 140
   cidr_block     = "0.0.0.0/0"
-  protocol       = "all"
-  from_port      = 1024
+  protocol       = "tcp"
+  from_port      = 700
   to_port        = 65535
   rule_action    = "allow"
   egress         = "true"
@@ -1065,7 +1065,7 @@ resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule" {
   network_acl_id = "${aws_network_acl.database.id}"
   rule_number    = 140
   cidr_block     = "0.0.0.0/0"
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 1024
   to_port        = 65535
   rule_action    = "allow"
@@ -1075,7 +1075,7 @@ resource "aws_network_acl_rule" "database_outbound_allow_all_ephemeral_rule" {
   network_acl_id = "${aws_network_acl.database.id}"
   rule_number    = 140
   cidr_block     = "0.0.0.0/0"
-  protocol       = "all"
+  protocol       = "tcp"
   from_port      = 1024
   to_port        = 65535
   rule_action    = "allow"
