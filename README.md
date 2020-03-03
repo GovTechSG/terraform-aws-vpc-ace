@@ -98,7 +98,6 @@ As this module was originalyl intended to create 1 vpc with 1 cidr range for man
 | vpc\_cidr | CIDR for the VPC, check that this doesn't collide with an existing one | string | n/a | yes |
 | vpc\_id | VPC id for use in cases where VPC was already created and you would like to reuse it with this module. Not required if create_vpc = true | string | `""` | no |
 | vpc\_name | Name of VPC | string | n/a | yes |
-| vpc\_peering\_connection\_id | ID of the GDSHIVE VPC Peering Connection if we are the acceptor | string | `""` | no |
 | vpc\_tags | Tags to apply to VPC | map | `<map>` | no |
 
 ## Outputs

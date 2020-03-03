@@ -178,12 +178,6 @@ variable "vpc_cidr" {
   type        = string
 }
 
-variable "vpc_peering_connection_id" {
-  description = "ID of the GDSHIVE VPC Peering Connection if we are the acceptor"
-  type        = string
-  default     = ""
-}
-
 variable "folder" {
   description = "Path relative to root of terraform directory where this module is used. This is for easier locating of where the individual resource is created with aws console"
   type        = map
