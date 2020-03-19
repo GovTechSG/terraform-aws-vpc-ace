@@ -776,6 +776,27 @@ resource "aws_network_acl_rule" "private_outbound_allow_udp_openvpn" {
   egress         = "true"
 }
 
+resource "aws_network_acl_rule" "private_inbound_allow_tcp_dns" {
+  network_acl_id = "${aws_network_acl.private.id}"
+  rule_number    = 147
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 53
+  to_port        = 53
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "private_outbound_allow_tcp_dns" {
+  network_acl_id = "${aws_network_acl.private.id}"
+  rule_number    = 147
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 53
+  to_port        = 53
+  rule_action    = "allow"
+  egress         = "true"
+}
+
 ###########################
 # Intranet subnet ACL
 ###########################
