@@ -64,10 +64,14 @@ As this module was originalyl intended to create 1 vpc with 1 cidr range for man
 #### Terraform
 
 > terraform import 'module.vpc.aws_vpc.this[0]' vpc-xxxxxxxx
+> terraform import 'module.vpc.aws_vpc_ipv4_cidr_block_association.this[0]' vpc-cidr-assoc-xxx
+> terraform import 'module.vpc.aws_internet_gateway.this[0]' igw-xxx
 
 #### Terragrunt
 
 > terragrunt import 'module.vpc.aws_vpc.this[0]' vpc-xxxxxxxx
+> terragrunt import 'module.vpc.aws_vpc_ipv4_cidr_block_association.this[0]' vpc-cidr-assoc-xxx
+> terragrunt import 'module.vpc.aws_internet_gateway.this[0]' igw-xxx
 
 
 ## Inputs
