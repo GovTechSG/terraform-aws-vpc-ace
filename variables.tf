@@ -27,6 +27,12 @@ variable "enable_s3_endpoint" {
   default     = true
 }
 
+variable "enable_dynamodb_endpoint" {
+  description = "Should be true if you want to provision a DynamoDB endpoint to the VPC"
+  type        = bool
+  default     = false
+}
+
 variable "vpc_id" {
   description = "VPC id for use in cases where VPC was already created and you would like to reuse it with this module. Not required if create_vpc = true"
   type        = string
@@ -48,13 +54,13 @@ variable "public_new_bits" {
   description = "New bits of public subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
   type        = map
   default = {
-    xsmall  = "9"
-    small   = "8"
+    xsmall   = "9"
+    small    = "8"
     xmedium  = "7"
-    medium  = "6"
-    large   = "5"
-    xlarge  = "4"
-    xxlarge = "3"
+    medium   = "6"
+    large    = "5"
+    xlarge   = "4"
+    xxlarge  = "3"
     xxxlarge = "2"
   }
 }
@@ -86,13 +92,13 @@ variable "private_new_bits" {
   description = "New bits of private subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
   type        = map
   default = {
-    xsmall  = "9"
-    small   = "8"
+    xsmall   = "9"
+    small    = "8"
     xmedium  = "7"
-    medium  = "6"
-    large   = "5"
-    xlarge  = "4"
-    xxlarge = "3"
+    medium   = "6"
+    large    = "5"
+    xlarge   = "4"
+    xxlarge  = "3"
     xxxlarge = "2"
   }
 }
@@ -118,13 +124,13 @@ variable "intranet_new_bits" {
   description = "New bits of intranet subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
   type        = map
   default = {
-    xsmall  = "9"
-    small   = "8"
+    xsmall   = "9"
+    small    = "8"
     xmedium  = "7"
-    medium  = "6"
-    large   = "5"
-    xlarge  = "4"
-    xxlarge = "3"
+    medium   = "6"
+    large    = "5"
+    xlarge   = "4"
+    xxlarge  = "3"
     xxxlarge = "2"
   }
 }
@@ -144,13 +150,13 @@ variable "database_new_bits" {
   description = "New bits of database subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
   type        = map
   default = {
-    xsmall  = "9"
-    small   = "8"
+    xsmall   = "9"
+    small    = "8"
     xmedium  = "7"
-    medium  = "6"
-    large   = "5"
-    xlarge  = "4"
-    xxlarge = "3"
+    medium   = "6"
+    large    = "5"
+    xlarge   = "4"
+    xxlarge  = "3"
     xxxlarge = "2"
   }
 }

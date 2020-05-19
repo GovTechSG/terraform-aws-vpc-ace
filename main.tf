@@ -134,8 +134,8 @@ module "vpc" {
   external_nat_ip_ids                = "${aws_eip.nat.*.id}"
 
   # external services
-  enable_s3_endpoint = var.enable_s3_endpoint
-
+  enable_s3_endpoint       = var.enable_s3_endpoint
+  enable_dynamodb_endpoint = var.enable_dynamodb_endpoint
   # service discovery stuff
   enable_dns_hostnames = true
 
@@ -158,7 +158,7 @@ data "aws_subnet" "private_subnet_by_az" {
 }
 
 resource "aws_vpc_endpoint" "ec2" {
-  count = var.create_private_endpoints ? 1 : 0
+  count             = var.create_private_endpoints ? 1 : 0
   vpc_id            = module.vpc.vpc_id
   service_name      = data.aws_vpc_endpoint_service.ec2.service_name
   vpc_endpoint_type = "Interface"
@@ -177,7 +177,7 @@ data "aws_vpc_endpoint_service" "ecr_api" {
 }
 
 resource "aws_vpc_endpoint" "ecr_api" {
-  count = var.create_private_endpoints ? 1 : 0
+  count             = var.create_private_endpoints ? 1 : 0
   vpc_id            = module.vpc.vpc_id
   service_name      = data.aws_vpc_endpoint_service.ecr_api.service_name
   vpc_endpoint_type = "Interface"
@@ -195,9 +195,28 @@ data "aws_vpc_endpoint_service" "ecr_dkr" {
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
-  count = var.create_private_endpoints ? 1 : 0
+  count             = var.create_private_endpoints ? 1 : 0
   vpc_id            = module.vpc.vpc_id
   service_name      = data.aws_vpc_endpoint_service.ecr_dkr.service_name
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids  = [aws_security_group.allow_443.id]
+  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
+  private_dns_enabled = true
+}
+
+#######################
+# VPC Endpoint for KMS
+#######################
+data "aws_vpc_endpoint_service" "kms" {
+  service = "kms"
+}
+
+resource "aws_vpc_endpoint" "kms" {
+  count = var.create_private_endpoints ? 1 : 0
+
+  vpc_id            = module.vpc.vpc_id
+  service_name      = data.aws_vpc_endpoint_service.kms.service_name
   vpc_endpoint_type = "Interface"
 
   security_group_ids  = [aws_security_group.allow_443.id]

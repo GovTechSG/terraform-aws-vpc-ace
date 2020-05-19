@@ -79,7 +79,7 @@ output "private_subnet_per_az" {
 
 output "database_subnet_group" {
   description = "Group name of the database subnet"
-  value = "${module.vpc.database_subnet_group}"
+  value       = "${module.vpc.database_subnet_group}"
 }
 
 output "database_subnets_ids" {
