@@ -1056,6 +1056,29 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_udp_secondary_cidr" {
   rule_action    = "allow"
   egress         = true
 }
+
+resource "aws_network_acl_rule" "intra_inbound_allow_tcp_dns" {
+  network_acl_id = "${aws_network_acl.intra.id}"
+  rule_number    = 147
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 53
+  to_port        = 53
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "intra_outbound_allow_tcp_dns" {
+  network_acl_id = "${aws_network_acl.intra.id}"
+  rule_number    = 147
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 53
+  to_port        = 53
+  rule_action    = "allow"
+  egress         = "true"
+}
+
+
 ###########################
 # Database subnet ACL
 ###########################
