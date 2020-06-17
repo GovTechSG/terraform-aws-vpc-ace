@@ -1,13 +1,3 @@
-terraform {
-  backend "s3" {}
-  required_version = "~> 0.12.0"
-}
-
-provider "aws" {
-  version = "~> 2.25.0"
-  region  = var.aws_region
-}
-
 # retrieves the availability zones from the specified region (see provider)
 data "aws_availability_zones" "available" {}
 
