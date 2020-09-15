@@ -787,6 +787,51 @@ resource "aws_network_acl_rule" "intra_outbound_allow_tcp_dns" {
 }
 
 
+resource "aws_network_acl_rule" "intranet_inbound_bgp_179_rule" {
+  network_acl_id = "${aws_network_acl.intra.id}"
+  rule_number    = 150
+  cidr_block     = module.vpc.vpc_cidr_block
+  protocol       = "tcp"
+  from_port      = 179
+  to_port        = 179
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "intranet_outbound_bgp_179_rule" {
+  network_acl_id = "${aws_network_acl.intra.id}"
+  rule_number    = 150
+  cidr_block     = module.vpc.vpc_cidr_block
+  protocol       = "tcp"
+  from_port      = 179
+  to_port        = 179
+  rule_action    = "allow"
+  egress         = true
+}
+
+resource "aws_network_acl_rule" "intranet_inbound_bgp_179_rule_secondary_cidr" {
+  count          = length(var.secondary_cidr_blocks)
+  network_acl_id = "${aws_network_acl.intra.id}"
+  rule_number    = 151 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "tcp"
+  from_port      = 179
+  to_port        = 179
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "intranet_outbound_bgp_179_rule_secondary_cidr" {
+  count          = length(var.secondary_cidr_blocks)
+  network_acl_id = "${aws_network_acl.intra.id}"
+  rule_number    = 151 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "tcp"
+  from_port      = 179
+  to_port        = 179
+  rule_action    = "allow"
+  egress         = true
+}
+
+
 ###########################
 # Database subnet ACL
 ###########################
