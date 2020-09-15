@@ -214,9 +214,9 @@ variable "manage_cidr_block" {
 
 variable "default_security_group_rules" {
   description = "Allowed inbound rules for default security group"
-  type        = list
+  type        = map
   default     = {}
-  // Example input list
+  // Example input map
   // {
   //   "22"  = ["192.168.1.0/24", "10.1.1.0/24" ]
   //   "443" = ["0.0.0.0/0"]
