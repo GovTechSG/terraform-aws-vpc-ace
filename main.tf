@@ -259,6 +259,16 @@ resource "aws_vpc_endpoint" "efs" {
 resource "aws_default_security_group" "default" {
   vpc_id = module.vpc.vpc_id
   tags   = merge(var.tags, local.tags, var.folder)
+
+  dynamic ingress {
+    for_each = var.default_security_group_rules
+    content {
+      from_port   = ingress.key
+      to_port     = ingress.key
+      cidr_blocks = ingress.value
+      protocol    = "tcp"
+    }
+  }
 }
 
 resource "aws_security_group" "allow_443" {

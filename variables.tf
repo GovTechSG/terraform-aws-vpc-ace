@@ -212,3 +212,13 @@ variable "manage_cidr_block" {
   default     = ""
 }
 
+variable "default_security_group_rules" {
+  description = "Allowed inbound rules for default security group"
+  type        = list
+  default     = {}
+  // Example input list
+  // {
+  //   "22"  = ["192.168.1.0/24", "10.1.1.0/24" ]
+  //   "443" = ["0.0.0.0/0"]
+  // }
+}
