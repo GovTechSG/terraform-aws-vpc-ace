@@ -156,7 +156,6 @@ resource "aws_vpc_endpoint" "ec2" {
   security_group_ids  = [aws_security_group.allow_443.id]
   subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
   private_dns_enabled = true
-  //  var.ec2_endpoint_private_dns_enabled
 }
 
 ###########################
@@ -226,6 +225,25 @@ resource "aws_vpc_endpoint" "sts" {
 
   vpc_id            = module.vpc.vpc_id
   service_name      = data.aws_vpc_endpoint_service.sts.service_name
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids  = [aws_security_group.allow_443.id]
+  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
+  private_dns_enabled = true
+}
+
+#######################
+# VPC Endpoint for SQS
+#######################
+data "aws_vpc_endpoint_service" "sqs" {
+  service = "sqs"
+}
+
+resource "aws_vpc_endpoint" "sqs" {
+  count = var.create_private_endpoints ? 1 : 0
+
+  vpc_id            = module.vpc.vpc_id
+  service_name      = data.aws_vpc_endpoint_service.sqs.service_name
   vpc_endpoint_type = "Interface"
 
   security_group_ids  = [aws_security_group.allow_443.id]
