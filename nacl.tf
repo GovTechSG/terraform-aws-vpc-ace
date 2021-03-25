@@ -482,27 +482,6 @@ resource "aws_network_acl_rule" "private_outbound_allow_all_udp_secondary_cidr" 
   egress         = "true"
 }
 
-resource "aws_network_acl_rule" "private_inbound_allow_udp_openvpn" {
-  network_acl_id = "${aws_network_acl.private.id}"
-  rule_number    = 145
-  cidr_block     = "0.0.0.0/0"
-  protocol       = "udp"
-  from_port      = 1194
-  to_port        = 1194
-  rule_action    = "allow"
-}
-
-resource "aws_network_acl_rule" "private_outbound_allow_udp_openvpn" {
-  network_acl_id = "${aws_network_acl.private.id}"
-  rule_number    = 145
-  cidr_block     = "0.0.0.0/0"
-  protocol       = "udp"
-  from_port      = 1194
-  to_port        = 1194
-  rule_action    = "allow"
-  egress         = "true"
-}
-
 resource "aws_network_acl_rule" "private_inbound_allow_tcp_dns" {
   network_acl_id = "${aws_network_acl.private.id}"
   rule_number    = 147
