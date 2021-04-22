@@ -21,10 +21,10 @@ variable "create_private_endpoints" {
   default     = true
 }
 
-variable "create_api_gateway_private_endpoints" {
-  description = "Whether to create private endpoints for s3,ec2 etc"
+variable "create_api_gateway_private_endpoint" {
+  description = "Whether to create private endpoint for API Gateway"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_s3_endpoint" {
