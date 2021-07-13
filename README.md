@@ -73,6 +73,12 @@ As this module was originalyl intended to create 1 vpc with 1 cidr range for man
 > terragrunt import 'module.vpc.aws_vpc_ipv4_cidr_block_association.this[0]' vpc-cidr-assoc-xxx
 > terragrunt import 'module.vpc.aws_internet_gateway.this[0]' igw-xxx
 
+## Upgrade
+
+### from v1 to v2
+
+In v2.0 onwards, this module will no longer try to compute subnet cidrs using `cidrsubnet` functions and rely on user input to enter the cidr ranges for each subnet by themselves, see usage for example
+
 
 ## Inputs
 

@@ -4,36 +4,7 @@ data "aws_availability_zones" "available" {}
 locals {
   # elastic ip addresses - this should correspond with the number of
   # public subnets specified in `var.public_subnets`.
-  eip_count         = 3
-  manage_cidr_block = var.manage_cidr_block != "" ? var.manage_cidr_block : var.vpc_cidr
-  cidr_ip           = regex("[0-9]+.[0-9]+.[0-9]+.[0-9]+", local.manage_cidr_block)
-  # public subnets (internet access)
-  public_subnets = [
-    for num in var.public_subnet_net_nums :
-    "${cidrsubnet(local.manage_cidr_block, lookup(var.public_new_bits, var.public_subnet_new_bits_size), num)}"
-  ]
-
-  # private subnets (internet egress only)
-  private_subnets = [
-    for num in var.private_subnet_net_nums :
-    "${cidrsubnet(local.manage_cidr_block, lookup(var.private_new_bits, var.private_subnet_new_bits_size), num)}"
-  ]
-
-  secondary_private_subnets = [
-    for num in var.secondary_private_subnet_net_nums :
-    "${cidrsubnet(local.manage_cidr_block, lookup(var.private_new_bits, var.secondary_private_subnet_new_bits_size), num)}"
-  ]
-
-  database_subnets = [
-    for num in var.database_subnet_net_nums :
-    "${cidrsubnet(local.manage_cidr_block, lookup(var.database_new_bits, var.database_subnet_new_bits_size), num)}"
-  ]
-
-  # intra subnets (no internet access)
-  intra_subnets = [
-    for num in var.intranet_subnet_net_nums :
-    "${cidrsubnet(local.manage_cidr_block, lookup(var.intranet_new_bits, var.intranet_subnet_new_bits_size), num)}"
-  ]
+  eip_count = 3
 
   tags = var.cidr_name != "" ? { CIDR_NAME = var.cidr_name } : {}
 
@@ -45,10 +16,10 @@ locals {
 
 # creates the elastic IPs which the NAT gateways are allocated
 resource "aws_eip" "nat" {
-  count = "${local.eip_count}"
+  count = local.eip_count
 
   vpc  = true
-  tags = "${merge(var.tags, local.tags, var.folder)}"
+  tags = merge(var.tags, local.tags, var.folder)
 }
 
 # virtual private cloud creator
@@ -63,48 +34,48 @@ module "vpc" {
 
   # availability & network topology
   azs            = local.az_names
-  public_subnets = local.public_subnets
+  public_subnets = var.public_subnets_cidr_blocks
 
-  public_subnet_tags = "${merge(
+  public_subnet_tags = merge(
     var.eks_cluster_tags,
     {
       "kubernetes.io/role/elb" = "1",
       "AccessType"             = "internet ingress/egress"
     }
-  )}"
+  )
 
   public_route_table_tags = {
     "AccessType" = "internet ingress/egress"
   }
 
-  private_subnets = concat(local.private_subnets, local.secondary_private_subnets)
+  private_subnets = var.private_subnets_cidr_blocks
 
-  private_subnet_tags = "${merge(
+  private_subnet_tags = merge(
     var.eks_cluster_tags,
     {
       "kubernetes.io/role/internal-elb" = "1",
       "AccessType"                      = "internet egress"
     }
-  )}"
+  )
 
   private_route_table_tags = {
     "AccessType" = "internet egress"
   }
 
-  intra_subnets = "${local.intra_subnets}"
+  intra_subnets = var.intranet_subnets_cidr_blocks
 
-  intra_subnet_tags = "${merge(
+  intra_subnet_tags = merge(
     var.eks_cluster_tags,
     {
       "AccessType" = "intranet"
     }
-  )}"
+  )
 
   intra_route_table_tags = {
     "AccessType" = "intranet"
   }
 
-  database_subnets = "${local.database_subnets}"
+  database_subnets = var.database_subnets_cidr_blocks
 
   database_subnet_tags = {
     "AccessType" = "database"
@@ -120,7 +91,7 @@ module "vpc" {
   one_nat_gateway_per_az             = true
   reuse_nat_ips                      = true
   create_database_subnet_route_table = true
-  external_nat_ip_ids                = "${aws_eip.nat.*.id}"
+  external_nat_ip_ids                = aws_eip.nat.*.id
 
   # external services
   enable_s3_endpoint       = var.enable_s3_endpoint
@@ -295,7 +266,7 @@ resource "aws_default_security_group" "default" {
   vpc_id = module.vpc.vpc_id
   tags   = merge(var.tags, local.tags, var.folder)
 
-  dynamic ingress {
+  dynamic "ingress" {
     for_each = var.default_security_group_rules
     content {
       from_port   = ingress.key
@@ -307,7 +278,7 @@ resource "aws_default_security_group" "default" {
 }
 
 resource "aws_security_group" "allow_443" {
-  name        = "${var.vpc_name}-${local.cidr_ip}-allow-443"
+  name        = "${var.vpc_name}-allow-443"
   description = "Allow port 443 traffic to and from VPC cidr range"
   vpc_id      = module.vpc.vpc_id
 
@@ -315,14 +286,14 @@ resource "aws_security_group" "allow_443" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [local.manage_cidr_block]
+    cidr_blocks = var.secondary_cidr_blocks
   }
 
   egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [local.manage_cidr_block]
+    cidr_blocks = var.secondary_cidr_blocks
   }
 
   tags = {
@@ -331,7 +302,7 @@ resource "aws_security_group" "allow_443" {
 }
 
 resource "aws_security_group" "allow_http_https_outgoing" {
-  name        = "${var.vpc_name}-${local.cidr_ip}-allow-http-https-outgoing"
+  name        = "${var.vpc_name}-allow-http-https-outgoing"
   description = "Allow port all HTTP(S) traffic outgoing"
   vpc_id      = module.vpc.vpc_id
 

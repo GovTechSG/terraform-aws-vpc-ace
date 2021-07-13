@@ -3,7 +3,7 @@
 resource "aws_default_network_acl" "default" {
   default_network_acl_id = "${tolist(data.aws_network_acls.default.ids)[0]}"
 
-  tags = "${merge({ "Name" = "${var.vpc_name}-${local.cidr_ip}-default" }, var.tags, local.tags, var.folder)}"
+  tags = "${merge({ "Name" = "${var.vpc_name}-default" }, var.tags, local.tags, var.folder)}"
   lifecycle {
     ignore_changes = ["subnet_ids"]
   }
@@ -21,25 +21,25 @@ data "aws_network_acls" "default" {
 resource "aws_network_acl" "private" {
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.private_subnets}"
-  tags       = "${merge({ "Name" = "${var.vpc_name}-${local.cidr_ip}-private" }, var.tags, local.tags, var.folder)}"
+  tags       = "${merge({ "Name" = "${var.vpc_name}-private" }, var.tags, local.tags, var.folder)}"
 }
 
 resource "aws_network_acl" "public" {
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.public_subnets}"
-  tags       = "${merge({ "Name" = "${var.vpc_name}-${local.cidr_ip}-public" }, var.tags, local.tags, var.folder)}"
+  tags       = "${merge({ "Name" = "${var.vpc_name}-public" }, var.tags, local.tags, var.folder)}"
 }
 
 resource "aws_network_acl" "intra" {
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.intra_subnets}"
-  tags       = "${merge({ "Name" = "${var.vpc_name}-${local.cidr_ip}-intra" }, var.tags, local.tags, var.folder)}"
+  tags       = "${merge({ "Name" = "${var.vpc_name}-intra" }, var.tags, local.tags, var.folder)}"
 }
 
 resource "aws_network_acl" "database" {
   vpc_id     = "${module.vpc.vpc_id}"
   subnet_ids = "${module.vpc.database_subnets}"
-  tags       = "${merge({ "Name" = "${var.vpc_name}-${local.cidr_ip}-database" }, var.tags, local.tags, var.folder)}"
+  tags       = "${merge({ "Name" = "${var.vpc_name}-database" }, var.tags, local.tags, var.folder)}"
 }
 
 

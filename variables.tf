@@ -53,135 +53,24 @@ variable "aws_region" {
 
 variable "public_subnet_net_nums" {
   description = "list of netnums to use for public"
-  type        = list
-}
-
-variable "public_new_bits" {
-  description = "New bits of public subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
-  type        = map
-  default = {
-    xsmall   = "9"
-    small    = "8"
-    xmedium  = "7"
-    medium   = "6"
-    large    = "5"
-    xlarge   = "4"
-    xxlarge  = "3"
-    xxxlarge = "2"
-  }
-}
-
-variable "public_subnet_new_bits_size" {
-  description = "Bit size to use"
-  type        = string
-  default     = "small"
-}
-
-variable "private_subnet_net_nums" {
-  description = "list of netnums to use for private"
-  type        = list
+  type        = list(any)
 }
 
 variable "private_subnet_per_az_for_private_endpoints" {
   description = "list of private subnets that you want to join to a private endpoint"
-  type        = list
+  type        = list(any)
   default     = []
-}
-
-variable "secondary_private_subnet_net_nums" {
-  description = "list of netnums to use for private"
-  type        = list
-  default     = []
-}
-
-variable "private_new_bits" {
-  description = "New bits of private subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
-  type        = map
-  default = {
-    xsmall   = "9"
-    small    = "8"
-    xmedium  = "7"
-    medium   = "6"
-    large    = "5"
-    xlarge   = "4"
-    xxlarge  = "3"
-    xxxlarge = "2"
-  }
-}
-
-variable "private_subnet_new_bits_size" {
-  description = "Bit size to use"
-  type        = string
-  default     = "small"
-}
-
-variable "secondary_private_subnet_new_bits_size" {
-  description = "Bit size to use"
-  type        = string
-  default     = "small"
-}
-
-variable "intranet_subnet_net_nums" {
-  description = "list of netnums to use for intranet"
-  type        = list
-}
-
-variable "intranet_new_bits" {
-  description = "New bits of intranet subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
-  type        = map
-  default = {
-    xsmall   = "9"
-    small    = "8"
-    xmedium  = "7"
-    medium   = "6"
-    large    = "5"
-    xlarge   = "4"
-    xxlarge  = "3"
-    xxxlarge = "2"
-  }
-}
-
-variable "intranet_subnet_new_bits_size" {
-  description = "Bit size to use"
-  type        = string
-  default     = "small"
-}
-
-variable "database_subnet_net_nums" {
-  description = "list of netnums to use for database"
-  type        = list
-}
-
-variable "database_new_bits" {
-  description = "New bits of database subnet slice. See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/#what-is-newbits"
-  type        = map
-  default = {
-    xsmall   = "9"
-    small    = "8"
-    xmedium  = "7"
-    medium   = "6"
-    large    = "5"
-    xlarge   = "4"
-    xxlarge  = "3"
-    xxxlarge = "2"
-  }
-}
-
-variable "database_subnet_new_bits_size" {
-  description = "Bit size to use"
-  type        = string
-  default     = "small"
 }
 
 variable "tags" {
   description = "Tags to apply to resources"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "vpc_tags" {
   description = "Tags to apply to VPC"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -192,12 +81,12 @@ variable "vpc_cidr" {
 
 variable "folder" {
   description = "Path relative to root of terraform directory where this module is used. This is for easier locating of where the individual resource is created with aws console"
-  type        = map
+  type        = map(any)
 }
 
 variable "eks_cluster_tags" {
   description = "List of tags that EKS will create, but also added to VPC for persistency across terraform applies"
-  type        = map
+  type        = map(any)
 }
 
 variable "number_of_azs" {
@@ -212,19 +101,36 @@ variable "secondary_cidr_blocks" {
   default     = []
 }
 
-variable "manage_cidr_block" {
-  description = "CIDR Block that this resource is terraforming"
-  type        = string
-  default     = ""
-}
-
 variable "default_security_group_rules" {
   description = "Allowed inbound rules for default security group"
-  type        = map
+  type        = map(any)
   default     = {}
   // Example input map
   // {
   //   "22"  = ["192.168.1.0/24", "10.1.1.0/24" ]
   //   "443" = ["0.0.0.0/0"]
   // }
+}
+
+variable "intranet_subnets_cidr_blocks" {
+  description = "cidr range of your intranet subnets"
+  type        = list(string)
+  default     = []
+}
+
+variable "public_subnets_cidr_blocks" {
+  description = "cidr range of your public subnets"
+  type        = list(string)
+  default     = []
+}
+
+variable "private_subnets_cidr_blocks" {
+  description = "cidr range of your private subnets"
+  type        = list(string)
+  default     = []
+}
+variable "database_subnets_cidr_blocks" {
+  description = "cidr range of your database subnets"
+  type        = list(string)
+  default     = []
 }
