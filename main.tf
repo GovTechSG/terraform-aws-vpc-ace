@@ -5,6 +5,7 @@ locals {
   # elastic ip addresses - this should correspond with the number of
   # public subnets specified in `var.public_subnets`.
   eip_count = 3
+  cidr_ip = regex("[0-9]+.[0-9]+.[0-9]+.[0-9]+", length(var.secondary_cidr_blocks) > 0 ? var.secondary_cidr_blocks[0] : var.vpc_cidr)
 
   tags = var.cidr_name != "" ? { CIDR_NAME = var.cidr_name } : {}
 
@@ -278,7 +279,7 @@ resource "aws_default_security_group" "default" {
 }
 
 resource "aws_security_group" "allow_443" {
-  name        = "${var.vpc_name}-allow-443"
+  name        = "${var.vpc_name}-${local.cidr_ip}-allow-443"
   description = "Allow port 443 traffic to and from VPC cidr range"
   vpc_id      = module.vpc.vpc_id
 
@@ -302,7 +303,7 @@ resource "aws_security_group" "allow_443" {
 }
 
 resource "aws_security_group" "allow_http_https_outgoing" {
-  name        = "${var.vpc_name}-allow-http-https-outgoing"
+  name        = "${var.vpc_name}-${local.cidr_ip}-allow-http-https-outgoing"
   description = "Allow port all HTTP(S) traffic outgoing"
   vpc_id      = module.vpc.vpc_id
 

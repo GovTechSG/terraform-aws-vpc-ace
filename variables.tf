@@ -51,11 +51,6 @@ variable "aws_region" {
   default     = "ap-southeast-1"
 }
 
-variable "public_subnet_net_nums" {
-  description = "list of netnums to use for public"
-  type        = list(any)
-}
-
 variable "private_subnet_per_az_for_private_endpoints" {
   description = "list of private subnets that you want to join to a private endpoint"
   type        = list(any)
