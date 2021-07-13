@@ -36,23 +36,19 @@ module "vpc" {
     "Type" = "Internet"
   }
 
-  eks_cluster_tags = {
-    "kubernetes.io/cluster/shire" = "shared"
-  }
+  public_subnets_cidr_blocks = [
+    "172.2.2.0/27",
+  ]
+  database_subnets_cidr_blocks = [
+    "172.2.2.32/27,
+  ]
+
+  private_subnets_cidr_blocks = [
+    "172.2.2.64/27",
+
+  ]
   number_of_azs = 2
 
-  public_subnet_new_bits_size = "small"
-  private_subnet_new_bits_size = "small"
-  database_subnet_new_bits_size = "small"
-  intranet_subnet_new_bits_size = "small"
-
-  # number of subnets to create in each zone is defined by array size
-  # You need to make sure you calculate your IP range out prior so as to ensure that you don't have overlapping
-  # ip ranges. Use something like github/Terraform-FotD/cidrsubnet for deciding
-  public_subnet_net_nums = [1, 2, 3]
-  private_subnet_net_nums = [128,129,130]
-  database_subnet_net_nums = [170, 171]
-  intranet_subnet_net_nums = [253, 254, 255]
 }
 ```
 
