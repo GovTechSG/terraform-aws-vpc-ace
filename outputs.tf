@@ -6,22 +6,22 @@
 
 output "vpc_azs" {
   description = "AZs at time of creation"
-  value       = "${local.az_names}"
+  value       = local.az_names
 }
 
 output "vpc_id" {
   description = "ID of the created VPC"
-  value       = "${module.vpc.vpc_id}"
+  value       = module.vpc.vpc_id
 }
 
 output "vpc_region" {
   description = "The region the VPC belongs to"
-  value       = "${var.aws_region}"
+  value       = var.aws_region
 }
 
 output "vpc_cidr_block" {
   description = "The CIDR block of the VPC"
-  value       = "${module.vpc.vpc_cidr_block}"
+  value       = module.vpc.vpc_cidr_block
 }
 
 #
@@ -32,17 +32,17 @@ output "vpc_cidr_block" {
 
 output "public_subnets_ids" {
   description = "Public subnets for the VPC"
-  value       = "${module.vpc.public_subnets}"
+  value       = module.vpc.public_subnets
 }
 
 output "public_subnets_cidr_blocks" {
   description = "CIDR blocks for public subnets for the VPC"
-  value       = "${module.vpc.public_subnets_cidr_blocks}"
+  value       = module.vpc.public_subnets_cidr_blocks
 }
 
 output "vpc_public_route_table_ids" {
   description = "The IDs of the public route tables"
-  value       = "${module.vpc.public_route_table_ids}"
+  value       = module.vpc.public_route_table_ids
 }
 
 #
@@ -53,22 +53,22 @@ output "vpc_public_route_table_ids" {
 
 output "private_subnets_ids" {
   description = "Private subnets for the VPC"
-  value       = "${module.vpc.private_subnets}"
+  value       = module.vpc.private_subnets
 }
 
 output "private_subnets_cidr_blocks" {
   description = "CIDR blocks fo private subnets for the VPC"
-  value       = "${module.vpc.private_subnets_cidr_blocks}"
+  value       = module.vpc.private_subnets_cidr_blocks
 }
 
 output "vpc_private_route_table_ids" {
   description = "List of IDs of private route tables"
-  value       = "${module.vpc.private_route_table_ids}"
+  value       = module.vpc.private_route_table_ids
 }
 
 output "private_subnet_per_az" {
   description = "List of private subnets, 1 per AZ which are to be linked to private endpoints"
-  value       = "${data.aws_subnet.private_subnet_by_az}"
+  value       = data.aws_subnet.private_subnet_by_az
 }
 
 #
@@ -79,22 +79,22 @@ output "private_subnet_per_az" {
 
 output "database_subnet_group" {
   description = "Group name of the database subnet"
-  value       = "${module.vpc.database_subnet_group}"
+  value       = module.vpc.database_subnet_group
 }
 
 output "database_subnets_ids" {
   description = "Intranet subnets for the VPC"
-  value       = "${module.vpc.database_subnets}"
+  value       = module.vpc.database_subnets
 }
 
 output "database_subnets_cidr_blocks" {
   description = "CIDR blocks for database subnets for the VPC"
-  value       = "${module.vpc.database_subnets_cidr_blocks}"
+  value       = module.vpc.database_subnets_cidr_blocks
 }
 
 output "vpc_database_route_table_ids" {
   description = "List of IDs of database route tables"
-  value       = "${module.vpc.database_route_table_ids}"
+  value       = module.vpc.database_route_table_ids
 }
 
 #
@@ -105,17 +105,17 @@ output "vpc_database_route_table_ids" {
 
 output "intra_subnets_ids" {
   description = "Intranet subnets for the VPC"
-  value       = "${module.vpc.intra_subnets}"
+  value       = module.vpc.intra_subnets
 }
 
 output "intra_subnets_cidr_blocks" {
   description = "CIDR blocks for intranet subnets for the VPC"
-  value       = "${module.vpc.intra_subnets_cidr_blocks}"
+  value       = module.vpc.intra_subnets_cidr_blocks
 }
 
 output "vpc_intra_route_table_ids" {
   description = "List of IDs of intra route tables"
-  value       = "${module.vpc.intra_route_table_ids}"
+  value       = module.vpc.intra_route_table_ids
 }
 
 #
@@ -126,22 +126,22 @@ output "vpc_intra_route_table_ids" {
 
 output "vpc_nat_ids" {
   description = "NAT gateway IDs"
-  value       = ["${module.vpc.natgw_ids}"]
+  value       = [module.vpc.natgw_ids]
 }
 
 output "vpc_nat_eip_ids" {
   description = "EIP for the NAT gateway in the VPC"
-  value       = ["${module.vpc.nat_ids}"]
+  value       = [module.vpc.nat_ids]
 }
 
 output "vpc_nat_eip_public" {
   description = "Public address for the EIP on the NAT Gateway"
-  value       = ["${module.vpc.nat_public_ips}"]
+  value       = [module.vpc.nat_public_ips]
 }
 
 output "vpc_igw_id" {
   description = "IGW ID"
-  value       = "${module.vpc.igw_id}"
+  value       = module.vpc.igw_id
 }
 
 #
@@ -152,7 +152,7 @@ output "vpc_igw_id" {
 
 output "vpc_main_route_table_id" {
   description = "The ID of the main route table associated with this VPC"
-  value       = "${module.vpc.vpc_main_route_table_id}"
+  value       = module.vpc.vpc_main_route_table_id
 }
 
 #
@@ -163,12 +163,12 @@ output "vpc_main_route_table_id" {
 
 output "default_network_acl_id" {
   description = "The ID of the default network ACL"
-  value       = "${module.vpc.default_network_acl_id}"
+  value       = module.vpc.default_network_acl_id
 }
 
 output "default_security_group_id" {
   description = "The ID of the security group created by default on VPC creation"
-  value       = "${module.vpc.default_security_group_id}"
+  value       = module.vpc.default_security_group_id
 }
 
 output "public_network_acl_id" {
@@ -214,5 +214,5 @@ output "ecr_dkr_endpoint" {
 
 output "s3_endpoint" {
   description = "ID of s3 endpoint"
-  value       = "${module.vpc.vpc_endpoint_s3_id}"
+  value       = module.vpc.vpc_endpoint_s3_id
 }
