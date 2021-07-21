@@ -5,7 +5,7 @@ locals {
   # elastic ip addresses - this should correspond with the number of
   # public subnets specified in `var.public_subnets`.
   eip_count = 3
-  cidr_ip = regex("[0-9]+.[0-9]+.[0-9]+.[0-9]+", length(var.secondary_cidr_blocks) > 0 ? var.secondary_cidr_blocks[0] : var.vpc_cidr)
+  cidr_ip   = regex("[0-9]+.[0-9]+.[0-9]+.[0-9]+", length(var.secondary_cidr_blocks) > 0 ? var.secondary_cidr_blocks[0] : var.vpc_cidr)
 
   tags = var.cidr_name != "" ? { CIDR_NAME = var.cidr_name } : {}
 
@@ -25,8 +25,7 @@ resource "aws_eip" "nat" {
 
 # virtual private cloud creator
 module "vpc" {
-  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v2.7.0-3"
-
+  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v2.7.0-4"
   # meta data
   name                  = var.vpc_name
   cidr                  = var.vpc_cidr
@@ -48,6 +47,12 @@ module "vpc" {
   public_route_table_tags = {
     "AccessType" = "internet ingress/egress"
   }
+
+  firewall_subnets               = var.firewall_subnets_cidr_blocks
+  firewall_sync_states           = var.firewall_sync_states
+  firewall_dedicated_network_acl = var.firewall_dedicated_network_acl
+  firewall_inbound_acl_rules     = var.firewall_inbound_acl_rules
+  firewall_outbound_acl_rules    = var.firewall_outbound_acl_rules
 
   private_subnets = var.private_subnets_cidr_blocks
 
@@ -95,8 +100,10 @@ module "vpc" {
   external_nat_ip_ids                = aws_eip.nat.*.id
 
   # external services
-  enable_s3_endpoint       = var.enable_s3_endpoint
-  enable_dynamodb_endpoint = var.enable_dynamodb_endpoint
+  enable_s3_endpoint              = var.enable_s3_endpoint
+  enable_dynamodb_endpoint        = var.enable_dynamodb_endpoint
+  enable_ssm_endpoint             = var.enable_ssm_endpoint
+  ssm_endpoint_security_group_ids = var.ssm_endpoint_security_group_ids
   # service discovery stuff
   enable_dns_hostnames = true
 

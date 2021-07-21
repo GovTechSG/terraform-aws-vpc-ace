@@ -116,6 +116,27 @@ output "intra_subnets_cidr_blocks" {
 output "vpc_intra_route_table_ids" {
   description = "List of IDs of intra route tables"
   value       = module.vpc.intra_route_table_ids
+
+}
+
+output "firewall_subnets_ids" {
+  description = "firewall subnets for the VPC"
+  value       = module.vpc.firewall_subnets
+}
+
+output "firewall_subnet_arns" {
+  description = "List of ARNs of firewall subnets"
+  value       = module.vpc.firewall_subnet_arns
+}
+
+output "firewall_subnets_cidr_blocks" {
+  description = "CIDR blocks for firewall subnets for the VPC"
+  value       = module.vpc.firewall_subnets_cidr_blocks
+}
+
+output "firewall_route_table_ids" {
+  description = "List of IDs of firewall route tables"
+  value       = module.vpc.firewall_route_table_ids
 }
 
 #
@@ -189,6 +210,11 @@ output "private_network_acl_id" {
 output "database_network_acl_id" {
   description = "The ID of the database network ACL"
   value       = aws_network_acl.database.id
+}
+
+output "firewall_network_acl_id" {
+  description = "The ID of the database network ACL"
+  value       = module.vpc.firewall_network_acl_id
 }
 
 #

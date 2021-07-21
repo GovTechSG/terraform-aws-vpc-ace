@@ -124,8 +124,77 @@ variable "private_subnets_cidr_blocks" {
   type        = list(string)
   default     = []
 }
+
 variable "database_subnets_cidr_blocks" {
   description = "cidr range of your database subnets"
+  type        = list(string)
+  default     = []
+}
+
+variable "firewall_subnets_cidr_blocks" {
+  description = "cidr range of your firewall subnets"
+  type        = list(string)
+  default     = []
+}
+
+variable "firewall_sync_states" {
+  description = "Output of aws_networkfirewall_firewall.firewall_status[0].sync_states"
+  type = list(object({
+    attachment = list(object({
+      endpoint_id = string
+      subnet_id   = string
+    }))
+    availability_zone = string
+  }))
+  default = []
+}
+
+variable "firewall_dedicated_network_acl" {
+  description = "Whether to use dedicated network ACL (not default) and custom rules for firewall subnets"
+  type        = bool
+  default     = false
+}
+
+variable "firewall_inbound_acl_rules" {
+  description = "firewall subnets inbound network ACL rules"
+  type        = list(map(string))
+
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "firewall_outbound_acl_rules" {
+  description = "Firewall subnets outbound network ACL rules"
+  type        = list(map(string))
+
+  default = [
+    {
+      rule_number = 100
+      rule_action = "allow"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_block  = "0.0.0.0/0"
+    },
+  ]
+}
+
+variable "enable_ssm_endpoint" {
+  description = "Should be true if you want to provision an SSM endpoint to the VPC"
+  type        = bool
+  default     = false
+}
+
+variable "ssm_endpoint_security_group_ids" {
+  description = "The ID of one or more security groups to associate with the network interface for SSM endpoint"
   type        = list(string)
   default     = []
 }
