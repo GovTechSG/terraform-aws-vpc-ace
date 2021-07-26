@@ -75,7 +75,7 @@ As this module was originalyl intended to create 1 vpc with 1 cidr range for man
 
 In v2.0 onwards, this module will no longer try to compute subnet cidrs using `cidrsubnet` functions and rely on user input to enter the cidr ranges for each subnet by themselves, see usage for example
 
-## Modules
+# Modules
 
 | Name | Source | Version |
 |------|--------|---------|
@@ -205,7 +205,7 @@ In v2.0 onwards, this module will no longer try to compute subnet cidrs using `c
 | <a name="input_create_api_gateway_private_endpoint"></a> [create\_api\_gateway\_private\_endpoint](#input\_create\_api\_gateway\_private\_endpoint) | Whether to create private endpoint for API Gateway | `bool` | `false` | no |
 | <a name="input_create_private_endpoints"></a> [create\_private\_endpoints](#input\_create\_private\_endpoints) | Whether to create private endpoints for s3,ec2 etc | `bool` | `true` | no |
 | <a name="input_create_vpc"></a> [create\_vpc](#input\_create\_vpc) | Controls if VPC should be created (it affects almost all resources) | `bool` | `true` | no |
-| <a name="input_database_subnets_cidr_blocks"></a> [database\_subnets\_cidr\_blocks](#input\_database\_subnets\_cidr\_blocks) | cidr range of your database subnets | `list(string)` | `[]` | no |
+| <a name="input_database_subnets"></a> [database\_subnets](#input\_database\_subnets) | cidr range of your database subnets | `list(string)` | `[]` | no |
 | <a name="input_default_security_group_rules"></a> [default\_security\_group\_rules](#input\_default\_security\_group\_rules) | Allowed inbound rules for default security group | `map(any)` | `{}` | no |
 | <a name="input_eks_cluster_tags"></a> [eks\_cluster\_tags](#input\_eks\_cluster\_tags) | List of tags that EKS will create, but also added to VPC for persistency across terraform applies | `map(any)` | n/a | yes |
 | <a name="input_enable_dynamodb_endpoint"></a> [enable\_dynamodb\_endpoint](#input\_enable\_dynamodb\_endpoint) | Should be true if you want to provision a DynamoDB endpoint to the VPC | `bool` | `false` | no |
@@ -214,14 +214,14 @@ In v2.0 onwards, this module will no longer try to compute subnet cidrs using `c
 | <a name="input_firewall_dedicated_network_acl"></a> [firewall\_dedicated\_network\_acl](#input\_firewall\_dedicated\_network\_acl) | Whether to use dedicated network ACL (not default) and custom rules for firewall subnets | `bool` | `false` | no |
 | <a name="input_firewall_inbound_acl_rules"></a> [firewall\_inbound\_acl\_rules](#input\_firewall\_inbound\_acl\_rules) | firewall subnets inbound network ACL rules | `list(map(string))` | <pre>[<br>  {<br>    "cidr_block": "0.0.0.0/0",<br>    "from_port": 0,<br>    "protocol": "-1",<br>    "rule_action": "allow",<br>    "rule_number": 100,<br>    "to_port": 0<br>  }<br>]</pre> | no |
 | <a name="input_firewall_outbound_acl_rules"></a> [firewall\_outbound\_acl\_rules](#input\_firewall\_outbound\_acl\_rules) | Firewall subnets outbound network ACL rules | `list(map(string))` | <pre>[<br>  {<br>    "cidr_block": "0.0.0.0/0",<br>    "from_port": 0,<br>    "protocol": "-1",<br>    "rule_action": "allow",<br>    "rule_number": 100,<br>    "to_port": 0<br>  }<br>]</pre> | no |
-| <a name="input_firewall_subnets_cidr_blocks"></a> [firewall\_subnets\_cidr\_blocks](#input\_firewall\_subnets\_cidr\_blocks) | cidr range of your firewall subnets | `list(string)` | `[]` | no |
+| <a name="input_firewall_subnets"></a> [firewall\_subnets](#input\_firewall\_subnets) | cidr range of your firewall subnets | `list(string)` | `[]` | no |
 | <a name="input_firewall_sync_states"></a> [firewall\_sync\_states](#input\_firewall\_sync\_states) | Output of aws\_networkfirewall\_firewall.firewall\_status[0].sync\_states | <pre>list(object({<br>    attachment = list(object({<br>      endpoint_id = string<br>      subnet_id   = string<br>    }))<br>    availability_zone = string<br>  }))</pre> | `[]` | no |
 | <a name="input_folder"></a> [folder](#input\_folder) | Path relative to root of terraform directory where this module is used. This is for easier locating of where the individual resource is created with aws console | `map(any)` | n/a | yes |
-| <a name="input_intranet_subnets_cidr_blocks"></a> [intranet\_subnets\_cidr\_blocks](#input\_intranet\_subnets\_cidr\_blocks) | cidr range of your intranet subnets | `list(string)` | `[]` | no |
+| <a name="input_intranet_subnets"></a> [intranet\_subnets](#input\_intranet\_subnets) | cidr range of your intranet subnets | `list(string)` | `[]` | no |
 | <a name="input_number_of_azs"></a> [number\_of\_azs](#input\_number\_of\_azs) | Determines number of availability zones to use in the region | `number` | `2` | no |
 | <a name="input_private_subnet_per_az_for_private_endpoints"></a> [private\_subnet\_per\_az\_for\_private\_endpoints](#input\_private\_subnet\_per\_az\_for\_private\_endpoints) | list of private subnets that you want to join to a private endpoint | `list(any)` | `[]` | no |
-| <a name="input_private_subnets_cidr_blocks"></a> [private\_subnets\_cidr\_blocks](#input\_private\_subnets\_cidr\_blocks) | cidr range of your private subnets | `list(string)` | `[]` | no |
-| <a name="input_public_subnets_cidr_blocks"></a> [public\_subnets\_cidr\_blocks](#input\_public\_subnets\_cidr\_blocks) | cidr range of your public subnets | `list(string)` | `[]` | no |
+| <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | cidr range of your private subnets | `list(string)` | `[]` | no |
+| <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | cidr range of your public subnets | `list(string)` | `[]` | no |
 | <a name="input_secondary_cidr_blocks"></a> [secondary\_cidr\_blocks](#input\_secondary\_cidr\_blocks) | List of secondary CIDR blocks to associate with the VPC to extend the IP Address pool | `list(string)` | `[]` | no |
 | <a name="input_ssm_endpoint_security_group_ids"></a> [ssm\_endpoint\_security\_group\_ids](#input\_ssm\_endpoint\_security\_group\_ids) | The ID of one or more security groups to associate with the network interface for SSM endpoint | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to resources | `map(any)` | `{}` | no |

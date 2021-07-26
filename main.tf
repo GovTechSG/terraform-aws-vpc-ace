@@ -26,6 +26,7 @@ resource "aws_eip" "nat" {
 # virtual private cloud creator
 module "vpc" {
   source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v2.7.0-4"
+  # source = ".//module"
   # meta data
   name                  = var.vpc_name
   cidr                  = var.vpc_cidr
@@ -34,7 +35,7 @@ module "vpc" {
 
   # availability & network topology
   azs            = local.az_names
-  public_subnets = var.public_subnets_cidr_blocks
+  public_subnets = var.public_subnets
 
   public_subnet_tags = merge(
     var.eks_cluster_tags,
@@ -48,13 +49,13 @@ module "vpc" {
     "AccessType" = "internet ingress/egress"
   }
 
-  firewall_subnets               = var.firewall_subnets_cidr_blocks
+  firewall_subnets               = var.firewall_subnets
   firewall_sync_states           = var.firewall_sync_states
   firewall_dedicated_network_acl = var.firewall_dedicated_network_acl
   firewall_inbound_acl_rules     = var.firewall_inbound_acl_rules
   firewall_outbound_acl_rules    = var.firewall_outbound_acl_rules
 
-  private_subnets = var.private_subnets_cidr_blocks
+  private_subnets = var.private_subnets
 
   private_subnet_tags = merge(
     var.eks_cluster_tags,
@@ -68,7 +69,7 @@ module "vpc" {
     "AccessType" = "internet egress"
   }
 
-  intra_subnets = var.intranet_subnets_cidr_blocks
+  intra_subnets = var.intranet_subnets
 
   intra_subnet_tags = merge(
     var.eks_cluster_tags,
@@ -81,7 +82,7 @@ module "vpc" {
     "AccessType" = "intranet"
   }
 
-  database_subnets = var.database_subnets_cidr_blocks
+  database_subnets = var.database_subnets
 
   database_subnet_tags = {
     "AccessType" = "database"

@@ -107,31 +107,31 @@ variable "default_security_group_rules" {
   // }
 }
 
-variable "intranet_subnets_cidr_blocks" {
+variable "intranet_subnets" {
   description = "cidr range of your intranet subnets"
   type        = list(string)
   default     = []
 }
 
-variable "public_subnets_cidr_blocks" {
+variable "public_subnets" {
   description = "cidr range of your public subnets"
   type        = list(string)
   default     = []
 }
 
-variable "private_subnets_cidr_blocks" {
+variable "private_subnets" {
   description = "cidr range of your private subnets"
   type        = list(string)
   default     = []
 }
 
-variable "database_subnets_cidr_blocks" {
+variable "database_subnets" {
   description = "cidr range of your database subnets"
   type        = list(string)
   default     = []
 }
 
-variable "firewall_subnets_cidr_blocks" {
+variable "firewall_subnets" {
   description = "cidr range of your firewall subnets"
   type        = list(string)
   default     = []
