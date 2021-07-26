@@ -36,14 +36,14 @@ module "vpc" {
     "Type" = "Internet"
   }
 
-  public_subnets_cidr_blocks = [
+  public_subnets = [
     "172.2.2.0/27",
   ]
-  database_subnets_cidr_blocks = [
+  database_subnets = [
     "172.2.2.32/27,
   ]
 
-  private_subnets_cidr_blocks = [
+  private_subnets = [
     "172.2.2.64/27",
 
   ]
