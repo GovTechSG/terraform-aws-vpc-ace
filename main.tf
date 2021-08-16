@@ -268,6 +268,26 @@ resource "aws_vpc_endpoint" "efs" {
 }
 
 #######################
+# VPC Endpoint for Cloudwatch Logs
+#######################
+data "aws_vpc_endpoint_service" "cwl" {
+  service = "logs"
+}
+
+resource "aws_vpc_endpoint" "cwl" {
+  count = var.create_cwl_private_endpoint ? 1 : 0
+
+  vpc_id            = module.vpc.vpc_id
+  service_name      = data.aws_vpc_endpoint_service.cwl.service_name
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids  = [aws_security_group.allow_443.id]
+  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
+  private_dns_enabled = true
+}
+
+
+#######################
 # Security Groups
 #######################
 

@@ -27,6 +27,12 @@ variable "create_api_gateway_private_endpoint" {
   default     = false
 }
 
+variable "create_cwl_private_endpoint" {
+  description = "Whether to create private endpoint for CloudWatch Logs"
+  type        = bool
+  default     = false
+}
+
 variable "enable_s3_endpoint" {
   description = "Whether to create private s3 endpoint"
   type        = bool
