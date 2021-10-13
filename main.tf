@@ -108,6 +108,11 @@ module "vpc" {
   # service discovery stuff
   enable_dns_hostnames = true
 
+  # nacl
+  manage_default_network_acl = var.manage_default_network_acl
+  default_network_acl_name   = var.default_network_acl_name
+  default_network_acl_tags   = var.default_network_acl_tags
+
   # others
   map_public_ip_on_launch = var.map_public_ip_on_launch
   tags                    = merge(var.tags, local.vpc_tags)

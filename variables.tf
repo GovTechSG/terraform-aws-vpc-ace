@@ -210,3 +210,21 @@ variable "map_public_ip_on_launch" {
   type        = bool
   default     = true
 }
+
+variable "manage_default_network_acl" {
+  description = "Should be true to adopt and manage Default Network ACL"
+  type        = bool
+  default     = false
+}
+
+variable "default_network_acl_name" {
+  description = "Name to be used on the Default Network ACL"
+  type        = string
+  default     = ""
+}
+
+variable "default_network_acl_tags" {
+  description = "Additional tags for the Default Network ACL"
+  type        = map(string)
+  default     = {}
+}
