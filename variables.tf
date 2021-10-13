@@ -204,3 +204,9 @@ variable "ssm_endpoint_security_group_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "map_public_ip_on_launch" {
+  description = "Should be false if you do not want to auto-assign public IP on launch"
+  type        = bool
+  default     = true
+}

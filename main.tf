@@ -109,8 +109,8 @@ module "vpc" {
   enable_dns_hostnames = true
 
   # others
-  #  tags = merge(var.tags, var.folder, local.vpc_tags)
-  tags = merge(var.tags, local.vpc_tags)
+  map_public_ip_on_launch = var.map_public_ip_on_launch
+  tags                    = merge(var.tags, local.vpc_tags)
 }
 
 #######################
