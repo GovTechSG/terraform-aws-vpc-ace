@@ -79,7 +79,7 @@ In v2.0 onwards, this module will no longer try to compute subnet cidrs using `c
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | github.com/GovTechSG/terraform-aws-vpc-forked | v2.7.0-4 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | github.com/GovTechSG/terraform-aws-vpc-forked | v2.7.0-6 |
 
 ## Resources
 
@@ -177,22 +177,26 @@ In v2.0 onwards, this module will no longer try to compute subnet cidrs using `c
 | [aws_security_group.allow_443](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.allow_http_https_outgoing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_vpc_endpoint.api_gw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.cwl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.ec2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.ecr_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.ecr_dkr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.kms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.monitoring](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.sqs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.sts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_network_acls.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/network_acls) | data source |
 | [aws_subnet.private_subnet_by_az](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc_endpoint_service.api_gw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
+| [aws_vpc_endpoint_service.cwl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 | [aws_vpc_endpoint_service.ec2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 | [aws_vpc_endpoint_service.ecr_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 | [aws_vpc_endpoint_service.ecr_dkr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 | [aws_vpc_endpoint_service.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 | [aws_vpc_endpoint_service.kms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
+| [aws_vpc_endpoint_service.monitoring](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 | [aws_vpc_endpoint_service.sqs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 | [aws_vpc_endpoint_service.sts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 
@@ -203,9 +207,12 @@ In v2.0 onwards, this module will no longer try to compute subnet cidrs using `c
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | Region to deploy current terraform script | `string` | `"ap-southeast-1"` | no |
 | <a name="input_cidr_name"></a> [cidr\_name](#input\_cidr\_name) | Name of cidr managed | `string` | `""` | no |
 | <a name="input_create_api_gateway_private_endpoint"></a> [create\_api\_gateway\_private\_endpoint](#input\_create\_api\_gateway\_private\_endpoint) | Whether to create private endpoint for API Gateway | `bool` | `false` | no |
+| <a name="input_create_cwl_private_endpoint"></a> [create\_cwl\_private\_endpoint](#input\_create\_cwl\_private\_endpoint) | Whether to create private endpoint for CloudWatch Logs | `bool` | `false` | no |
 | <a name="input_create_private_endpoints"></a> [create\_private\_endpoints](#input\_create\_private\_endpoints) | Whether to create private endpoints for s3,ec2 etc | `bool` | `true` | no |
 | <a name="input_create_vpc"></a> [create\_vpc](#input\_create\_vpc) | Controls if VPC should be created (it affects almost all resources) | `bool` | `true` | no |
 | <a name="input_database_subnets"></a> [database\_subnets](#input\_database\_subnets) | cidr range of your database subnets | `list(string)` | `[]` | no |
+| <a name="input_default_network_acl_name"></a> [default\_network\_acl\_name](#input\_default\_network\_acl\_name) | Name to be used on the Default Network ACL | `string` | `""` | no |
+| <a name="input_default_network_acl_tags"></a> [default\_network\_acl\_tags](#input\_default\_network\_acl\_tags) | Additional tags for the Default Network ACL | `map(string)` | `{}` | no |
 | <a name="input_default_security_group_rules"></a> [default\_security\_group\_rules](#input\_default\_security\_group\_rules) | Allowed inbound rules for default security group | `map(any)` | `{}` | no |
 | <a name="input_eks_cluster_tags"></a> [eks\_cluster\_tags](#input\_eks\_cluster\_tags) | List of tags that EKS will create, but also added to VPC for persistency across terraform applies | `map(any)` | n/a | yes |
 | <a name="input_enable_dynamodb_endpoint"></a> [enable\_dynamodb\_endpoint](#input\_enable\_dynamodb\_endpoint) | Should be true if you want to provision a DynamoDB endpoint to the VPC | `bool` | `false` | no |
@@ -218,6 +225,8 @@ In v2.0 onwards, this module will no longer try to compute subnet cidrs using `c
 | <a name="input_firewall_sync_states"></a> [firewall\_sync\_states](#input\_firewall\_sync\_states) | Output of aws\_networkfirewall\_firewall.firewall\_status[0].sync\_states | <pre>list(object({<br>    attachment = list(object({<br>      endpoint_id = string<br>      subnet_id   = string<br>    }))<br>    availability_zone = string<br>  }))</pre> | `[]` | no |
 | <a name="input_folder"></a> [folder](#input\_folder) | Path relative to root of terraform directory where this module is used. This is for easier locating of where the individual resource is created with aws console | `map(any)` | n/a | yes |
 | <a name="input_intranet_subnets"></a> [intranet\_subnets](#input\_intranet\_subnets) | cidr range of your intranet subnets | `list(string)` | `[]` | no |
+| <a name="input_manage_default_network_acl"></a> [manage\_default\_network\_acl](#input\_manage\_default\_network\_acl) | Should be true to adopt and manage Default Network ACL | `bool` | `false` | no |
+| <a name="input_map_public_ip_on_launch"></a> [map\_public\_ip\_on\_launch](#input\_map\_public\_ip\_on\_launch) | Should be false if you do not want to auto-assign public IP on launch | `bool` | `true` | no |
 | <a name="input_number_of_azs"></a> [number\_of\_azs](#input\_number\_of\_azs) | Determines number of availability zones to use in the region | `number` | `2` | no |
 | <a name="input_private_subnet_per_az_for_private_endpoints"></a> [private\_subnet\_per\_az\_for\_private\_endpoints](#input\_private\_subnet\_per\_az\_for\_private\_endpoints) | list of private subnets that you want to join to a private endpoint | `list(any)` | `[]` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | cidr range of your private subnets | `list(string)` | `[]` | no |
@@ -248,6 +257,7 @@ In v2.0 onwards, this module will no longer try to compute subnet cidrs using `c
 | <a name="output_firewall_subnet_arns"></a> [firewall\_subnet\_arns](#output\_firewall\_subnet\_arns) | List of ARNs of firewall subnets |
 | <a name="output_firewall_subnets_cidr_blocks"></a> [firewall\_subnets\_cidr\_blocks](#output\_firewall\_subnets\_cidr\_blocks) | CIDR blocks for firewall subnets for the VPC |
 | <a name="output_firewall_subnets_ids"></a> [firewall\_subnets\_ids](#output\_firewall\_subnets\_ids) | firewall subnets for the VPC |
+| <a name="output_https_security_group_id"></a> [https\_security\_group\_id](#output\_https\_security\_group\_id) | The ID of the security group to all traffic from 443 |
 | <a name="output_intra_subnets_cidr_blocks"></a> [intra\_subnets\_cidr\_blocks](#output\_intra\_subnets\_cidr\_blocks) | CIDR blocks for intranet subnets for the VPC |
 | <a name="output_intra_subnets_ids"></a> [intra\_subnets\_ids](#output\_intra\_subnets\_ids) | Intranet subnets for the VPC |
 | <a name="output_intranet_network_acl_id"></a> [intranet\_network\_acl\_id](#output\_intranet\_network\_acl\_id) | The ID of the intra network ACL |
