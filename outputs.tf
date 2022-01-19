@@ -192,6 +192,11 @@ output "default_security_group_id" {
   value       = module.vpc.default_security_group_id
 }
 
+output "https_security_group_id" {
+  description = "The ID of the security group to all traffic from 443"
+  value       = aws_security_group.allow_443.id
+}
+
 output "public_network_acl_id" {
   description = "The ID of the public network ACL"
   value       = aws_network_acl.public.id
