@@ -197,6 +197,11 @@ output "https_security_group_id" {
   value       = aws_security_group.allow_443.id
 }
 
+output "egress_security_group_id" {
+  description = "The ID of the security group to all traffic"
+  value       = aws_security_group.allow_all_egress.id
+}
+
 output "public_network_acl_id" {
   description = "The ID of the public network ACL"
   value       = aws_network_acl.public.id
