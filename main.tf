@@ -351,6 +351,23 @@ resource "aws_security_group" "allow_443" {
   }
 }
 
+resource "aws_security_group" "allow_all_egress" {
+  name        = "${var.vpc_name}-${local.cidr_ip}-allow-all-egress"
+  description = "Allow port all traffic outgoing, used for lambda"
+  vpc_id      = module.vpc.vpc_id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Allow All Egress"
+  }
+}
+
 resource "aws_security_group" "allow_http_https_outgoing" {
   name        = "${var.vpc_name}-${local.cidr_ip}-allow-http-https-outgoing"
   description = "Allow port all HTTP(S) traffic outgoing"
