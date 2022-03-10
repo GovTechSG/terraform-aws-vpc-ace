@@ -11,7 +11,6 @@ locals {
 
   az_names = slice(data.aws_availability_zones.available.names, 0, var.number_of_azs)
 
-  # vpc_tags = merge(var.vpc_tags, local.tags,var.eks_cluster_tags, { VPC = "${var.vpc_name}-${local.cidr_ip}" })
   vpc_tags = merge(var.vpc_tags)
 }
 
@@ -25,8 +24,8 @@ resource "aws_eip" "nat" {
 
 # virtual private cloud creator
 module "vpc" {
-  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v2.7.0-6"
-  # source = ".//module"
+  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v3.7.0"
+
   # meta data
   name                  = var.vpc_name
   cidr                  = var.vpc_cidr
@@ -100,11 +99,6 @@ module "vpc" {
   create_database_subnet_route_table = true
   external_nat_ip_ids                = aws_eip.nat.*.id
 
-  # external services
-  enable_s3_endpoint              = var.enable_s3_endpoint
-  enable_dynamodb_endpoint        = var.enable_dynamodb_endpoint
-  enable_ssm_endpoint             = var.enable_ssm_endpoint
-  ssm_endpoint_security_group_ids = var.ssm_endpoint_security_group_ids
   # service discovery stuff
   enable_dns_hostnames = true
 
@@ -116,196 +110,6 @@ module "vpc" {
   # others
   map_public_ip_on_launch = var.map_public_ip_on_launch
   tags                    = merge(var.tags, local.vpc_tags)
-}
-
-#######################
-# VPC Endpoint for EC2
-#######################
-data "aws_vpc_endpoint_service" "ec2" {
-  service = "ec2"
-}
-
-data "aws_subnet" "private_subnet_by_az" {
-  count      = length(local.az_names)
-  cidr_block = element(module.vpc.private_subnets_cidr_blocks, count.index)
-  depends_on = [module.vpc]
-}
-
-resource "aws_vpc_endpoint" "ec2" {
-  count             = var.create_private_endpoints ? 1 : 0
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.ec2.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-###########################
-# VPC Endpoint for API Gateway
-###########################
-data "aws_vpc_endpoint_service" "api_gw" {
-  service = "execute-api"
-}
-
-resource "aws_vpc_endpoint" "api_gw" {
-  count             = var.create_api_gateway_private_endpoint ? 1 : 0
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.api_gw.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-###########################
-# VPC Endpoint for ECR API
-###########################
-data "aws_vpc_endpoint_service" "ecr_api" {
-  service = "ecr.api"
-}
-
-resource "aws_vpc_endpoint" "ecr_api" {
-  count             = var.create_private_endpoints ? 1 : 0
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.ecr_api.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-###########################
-# VPC Endpoint for ECR DKR
-###########################
-data "aws_vpc_endpoint_service" "ecr_dkr" {
-  service = "ecr.dkr"
-}
-
-resource "aws_vpc_endpoint" "ecr_dkr" {
-  count             = var.create_private_endpoints ? 1 : 0
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.ecr_dkr.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-#######################
-# VPC Endpoint for KMS
-#######################
-data "aws_vpc_endpoint_service" "kms" {
-  service = "kms"
-}
-
-resource "aws_vpc_endpoint" "kms" {
-  count = var.create_private_endpoints ? 1 : 0
-
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.kms.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-#######################
-# VPC Endpoint for STS
-#######################
-data "aws_vpc_endpoint_service" "sts" {
-  service = "sts"
-}
-
-resource "aws_vpc_endpoint" "sts" {
-  count = var.create_private_endpoints ? 1 : 0
-
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.sts.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-#######################
-# VPC Endpoint for SQS
-#######################
-data "aws_vpc_endpoint_service" "sqs" {
-  service = "sqs"
-}
-
-resource "aws_vpc_endpoint" "sqs" {
-  count = var.create_private_endpoints ? 1 : 0
-
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.sqs.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-#######################
-# VPC Endpoint for EFS
-#######################
-data "aws_vpc_endpoint_service" "efs" {
-  service = "elasticfilesystem"
-}
-
-resource "aws_vpc_endpoint" "efs" {
-  count = var.create_private_endpoints ? 1 : 0
-
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.efs.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-#######################
-# VPC Endpoint for Cloudwatch Logs and Metrics
-#######################
-
-data "aws_vpc_endpoint_service" "cwl" {
-  service = "logs"
-}
-
-resource "aws_vpc_endpoint" "cwl" {
-  count = var.create_cwl_private_endpoint ? 1 : 0
-
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.cwl.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
-}
-
-data "aws_vpc_endpoint_service" "monitoring" {
-  service = "monitoring"
-}
-
-resource "aws_vpc_endpoint" "monitoring" {
-  count = var.create_cwl_private_endpoint ? 1 : 0
-
-  vpc_id            = module.vpc.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.monitoring.service_name
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids  = [aws_security_group.allow_443.id]
-  subnet_ids          = distinct(concat(data.aws_subnet.private_subnet_by_az.*.id, var.private_subnet_per_az_for_private_endpoints))
-  private_dns_enabled = true
 }
 
 #######################

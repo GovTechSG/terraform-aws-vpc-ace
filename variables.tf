@@ -15,36 +15,6 @@ variable "cidr_name" {
   default     = ""
 }
 
-variable "create_private_endpoints" {
-  description = "Whether to create private endpoints for s3,ec2 etc"
-  type        = bool
-  default     = true
-}
-
-variable "create_api_gateway_private_endpoint" {
-  description = "Whether to create private endpoint for API Gateway"
-  type        = bool
-  default     = false
-}
-
-variable "create_cwl_private_endpoint" {
-  description = "Whether to create private endpoint for CloudWatch Logs"
-  type        = bool
-  default     = false
-}
-
-variable "enable_s3_endpoint" {
-  description = "Whether to create private s3 endpoint"
-  type        = bool
-  default     = true
-}
-
-variable "enable_dynamodb_endpoint" {
-  description = "Should be true if you want to provision a DynamoDB endpoint to the VPC"
-  type        = bool
-  default     = false
-}
-
 variable "vpc_id" {
   description = "VPC id for use in cases where VPC was already created and you would like to reuse it with this module. Not required if create_vpc = true"
   type        = string
@@ -55,12 +25,6 @@ variable "aws_region" {
   description = "Region to deploy current terraform script"
   type        = string
   default     = "ap-southeast-1"
-}
-
-variable "private_subnet_per_az_for_private_endpoints" {
-  description = "list of private subnets that you want to join to a private endpoint"
-  type        = list(any)
-  default     = []
 }
 
 variable "tags" {
@@ -191,18 +155,6 @@ variable "firewall_outbound_acl_rules" {
       cidr_block  = "0.0.0.0/0"
     },
   ]
-}
-
-variable "enable_ssm_endpoint" {
-  description = "Should be true if you want to provision an SSM endpoint to the VPC"
-  type        = bool
-  default     = false
-}
-
-variable "ssm_endpoint_security_group_ids" {
-  description = "The ID of one or more security groups to associate with the network interface for SSM endpoint"
-  type        = list(string)
-  default     = []
 }
 
 variable "map_public_ip_on_launch" {

@@ -17,6 +17,131 @@ You will notice that a number of resources in VPC dashboard that you cannot modi
 
 This module will fail as it tries to create NAT Gateway for you, which GCC does not. Therefore you will have to either, raise a SR to create them, or raise a SR to request for a temporary lift of the permission boundaries for you to apply this module (Recommended)
 
+## Upgrade from v2 to v3
+
+### Splitting of VPC endpoints to submodule
+
+The original VPC module has since moved away from creating individual VPC endpoints within the module and decoupled it from the main module. See [PR](https://github.com/terraform-aws-modules/terraform-aws-vpc/pull/635)
+
+You will have to implement the submodule separately(import and apply), before updating to v3 on this module.
+
+Setup your code as shown in the below example, after which, run `terraform import 'aws_vpc_endpoint.this["kms"]'  vpce-xxxx` etc until you have imported all your endpoint services. You may now apply the vpc endpoint submodule, and you should not see any changes to your endpoints that will impact your existing applications, e.g changes to tags are okay, but changes to route table are not.
+
+#### Examples
+
+##### Terraform
+
+```hcl
+module "endpoints" {
+  source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+
+  vpc_id             = "vpc-12345678"
+  security_group_ids = ["sg-12345678"]
+
+  endpoints = {
+    s3 = {
+      # interface endpoint
+      service             = "s3"
+      tags                = { Name = "s3-vpc-endpoint" }
+    },
+    dynamodb = {
+      # gateway endpoint
+      service         = "dynamodb"
+      route_table_ids = ["rt-12322456", "rt-43433343", "rt-11223344"]
+      tags            = { Name = "dynamodb-vpc-endpoint" }
+    },
+    sns = {
+      service    = "sns"
+      subnet_ids = ["subnet-12345678", "subnet-87654321"]
+      tags       = { Name = "sns-vpc-endpoint" }
+    },
+    sqs = {
+      service             = "sqs"
+      private_dns_enabled = true
+      security_group_ids  = ["sg-987654321"]
+      subnet_ids          = ["subnet-12345678", "subnet-87654321"]
+      tags                = { Name = "sqs-vpc-endpoint" }
+    },
+  }
+
+  tags = {
+    Owner       = "user"
+    Environment = "dev"
+  }
+}
+```
+
+##### Terragrunt
+
+```hcl
+dependency "vpc" {
+  config_path = "../vpc"
+}
+
+inputs = {
+
+  vpc_id             = dependency.vpc.outputs.vpc_id
+  security_group_ids = ["sg-xxx"]
+  subnet_ids         = dependency.vpc.outputs.private_subnets_ids
+
+  endpoints = {
+    s3 = {
+      # gateway endpoint
+      service      = "s3"
+      service_type = "Gateway"
+      tags         = { Name = "s3-vpc-endpoint" }
+    },
+    dynamodb = {
+      # gateway endpoint
+      service         = "dynamodb"
+      service_type    = "Gateway"
+      route_table_ids = concat(dependency.vpc.outputs.vpc_public_route_table_ids, dependency.vpc.outputs.vpc_private_route_table_ids, dependency.vpc.outputs.vpc_intra_route_table_ids)
+      tags            = { Name = "dynamodb-vpc-endpoint" }
+    },
+    ec2 = {
+      service             = "ec2"
+      private_dns_enabled = true
+      tags                = { Name = "ec2-vpc-endpoint" }
+    }
+    ecr = {
+      service             = "ecr.api"
+      private_dns_enabled = true
+      tags                = { Name = "ecr-api-vpc-endpoint" }
+    }
+    elasticfilesystem = {
+      service             = "elasticfilesystem"
+      private_dns_enabled = true
+      tags                = { Name = "elasticfilesystem-vpc-endpoint" }
+    }
+    kms = {
+      service             = "kms"
+      private_dns_enabled = true
+      tags                = { Name = "kms-vpc-endpoint" }
+    }
+    execute-api = {
+      service             = "execute-api"
+      private_dns_enabled = true
+      tags                = { Name = "execute-api-vpc-endpoint" }
+    }
+    sts = {
+      service             = "sts"
+      private_dns_enabled = true
+      tags                = { Name = "sts-vpc-endpoint" }
+    }
+    "ecr.dkr" = {
+      service             = "ecr.dkr"
+      private_dns_enabled = true
+      tags                = { Name = "ecr-dkr-vpc-endpoint" }
+    }
+    sqs = {
+      service             = "sqs"
+      private_dns_enabled = true
+      tags                = { Name = "sqs-vpc-endpoint" }
+    },
+  }
+}```
+
+
 ## Usage
 
 There are 2 ways to use this module, mainly
@@ -54,6 +179,13 @@ module "vpc" {
 
 Note the usage of `secondary_cidr_blocks` and `manage_cidr_block`
 As this module was originalyl intended to create 1 vpc with 1 cidr range for management, and it was only later discovered that GCC creates multiple cidr ranges in your VPC, you will have to use `manage_cidr_block` to tell the module to add create and manage resources for 1 cidr range at a time. Duplicate the module block for managing multiple cidrs as a workaround for now.
+
+
+### Removing VPC endpoint state from VPC module
+
+If you apply the VPC module immediately, you will notice that terraform will destroy your existing endpoints, this is not what we want. Since we have moved the state to be managed by the VPC endpoint submodule, we will need to remove the endpoint state from the VPC module.
+
+For each of your endpoints, run `terraform state rm "aws_vpc_endpoint.kms[0]"`
 
 ### Reuse VPC
 
