@@ -204,11 +204,9 @@ As this module was originalyl intended to create 1 vpc with 1 cidr range for man
 > terragrunt import 'module.vpc.aws_vpc_ipv4_cidr_block_association.this[0]' vpc-cidr-assoc-xxx
 > terragrunt import 'module.vpc.aws_internet_gateway.this[0]' igw-xxx
 
-# Modules
+## Requirements
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | github.com/GovTechSG/terraform-aws-vpc-forked | v2.7.0-6 |
+No requirements.
 
 ## Providers
 
@@ -331,7 +329,7 @@ As this module was originalyl intended to create 1 vpc with 1 cidr range for man
 | <a name="input_default_network_acl_name"></a> [default\_network\_acl\_name](#input\_default\_network\_acl\_name) | Name to be used on the Default Network ACL | `string` | `""` | no |
 | <a name="input_default_network_acl_tags"></a> [default\_network\_acl\_tags](#input\_default\_network\_acl\_tags) | Additional tags for the Default Network ACL | `map(string)` | `{}` | no |
 | <a name="input_default_security_group_rules"></a> [default\_security\_group\_rules](#input\_default\_security\_group\_rules) | Allowed inbound rules for default security group | `map(any)` | `{}` | no |
-| <a name="input_eks_cluster_tags"></a> [eks\_cluster\_tags](#input\_eks\_cluster\_tags) | List of tags that EKS will create, but also added to VPC for persistency across terraform applies | `map(any)` | n/a | yes |
+| <a name="input_eks_cluster_tags"></a> [eks\_cluster\_tags](#input\_eks\_cluster\_tags) | List of tags that EKS will create, but also added to VPC for persistency across terraform applies | `map(any)` | `{}` | no |
 | <a name="input_firewall_dedicated_network_acl"></a> [firewall\_dedicated\_network\_acl](#input\_firewall\_dedicated\_network\_acl) | Whether to use dedicated network ACL (not default) and custom rules for firewall subnets | `bool` | `false` | no |
 | <a name="input_firewall_inbound_acl_rules"></a> [firewall\_inbound\_acl\_rules](#input\_firewall\_inbound\_acl\_rules) | firewall subnets inbound network ACL rules | `list(map(string))` | <pre>[<br>  {<br>    "cidr_block": "0.0.0.0/0",<br>    "from_port": 0,<br>    "protocol": "-1",<br>    "rule_action": "allow",<br>    "rule_number": 100,<br>    "to_port": 0<br>  }<br>]</pre> | no |
 | <a name="input_firewall_outbound_acl_rules"></a> [firewall\_outbound\_acl\_rules](#input\_firewall\_outbound\_acl\_rules) | Firewall subnets outbound network ACL rules | `list(map(string))` | <pre>[<br>  {<br>    "cidr_block": "0.0.0.0/0",<br>    "from_port": 0,<br>    "protocol": "-1",<br>    "rule_action": "allow",<br>    "rule_number": 100,<br>    "to_port": 0<br>  }<br>]</pre> | no |

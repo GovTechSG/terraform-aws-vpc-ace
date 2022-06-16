@@ -52,6 +52,7 @@ variable "folder" {
 variable "eks_cluster_tags" {
   description = "List of tags that EKS will create, but also added to VPC for persistency across terraform applies"
   type        = map(any)
+  default     = {}
 }
 
 variable "number_of_azs" {
