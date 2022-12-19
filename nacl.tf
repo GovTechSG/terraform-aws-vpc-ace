@@ -57,6 +57,16 @@ resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny" {
   rule_action    = "deny"
 }
 
+resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny_udp" {
+  network_acl_id = aws_network_acl.public.id
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 106
+  protocol       = "udp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+}
+
 resource "aws_network_acl_rule" "public_outbound_rdp_rule_deny" {
   network_acl_id = aws_network_acl.public.id
   rule_number    = 105
@@ -166,6 +176,17 @@ resource "aws_network_acl_rule" "private_inbound_rdp_rule_deny" {
   to_port        = 3389
   rule_action    = "deny"
 }
+
+resource "aws_network_acl_rule" "private_inbound_rdp_rule_deny_udp" {
+  network_acl_id = aws_network_acl.private.id
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 106
+  protocol       = "udp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+}
+
 
 resource "aws_network_acl_rule" "private_outbound_rdp_rule_deny" {
   network_acl_id = aws_network_acl.private.id
