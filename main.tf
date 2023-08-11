@@ -24,7 +24,7 @@ resource "aws_eip" "nat" {
 
 # virtual private cloud creator
 module "vpc" {
-  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v3.7.0"
+  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v4.0.0"
 
   # meta data
   name                  = var.vpc_name
@@ -110,6 +110,25 @@ module "vpc" {
   # others
   map_public_ip_on_launch = var.map_public_ip_on_launch
   tags                    = merge(var.tags, local.vpc_tags)
+
+  manage_default_vpc               = var.manage_default_vpc
+  default_vpc_tags                 = var.default_vpc_tags
+  default_vpc_name                 = var.default_vpc_name
+  default_vpc_enable_dns_support   = var.default_vpc_enable_dns_support
+  default_vpc_enable_dns_hostnames = var.default_vpc_enable_dns_hostnames
+
+  manage_default_security_group  = var.manage_default_security_group
+  default_security_group_name    = var.default_security_group_name
+  default_security_group_ingress = var.default_security_group_ingress
+  default_security_group_egress  = var.default_security_group_egress
+  default_security_group_tags    = var.default_security_group_tags
+
+  manage_default_route_table           = var.manage_default_route_table
+  default_route_table_name             = var.default_route_table_name
+  default_route_table_propagating_vgws = var.default_route_table_propagating_vgws
+  default_route_table_routes           = var.default_route_table_routes
+  default_route_table_tags             = var.default_route_table_tags
+
 }
 
 #######################
