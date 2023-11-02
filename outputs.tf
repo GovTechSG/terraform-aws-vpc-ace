@@ -179,12 +179,12 @@ output "vpc_main_route_table_id" {
 
 output "default_network_acl_id" {
   description = "The ID of the default network ACL"
-  value       = module.vpc.default_network_acl_id
+  value       = var.manage_default_network_acl ? module.vpc.default_network_acl_id : 0
 }
 
 output "default_security_group_id" {
   description = "The ID of the security group created by default on VPC creation"
-  value       = module.vpc.default_security_group_id
+  value       = var.manage_default_security_group ? module.vpc.default_security_group_id : ""
 }
 
 output "https_security_group_id" {
@@ -194,22 +194,22 @@ output "https_security_group_id" {
 
 output "public_network_acl_id" {
   description = "The ID of the public network ACL"
-  value       = aws_network_acl.public.id
+  value       = local.create_public ? aws_network_acl.public[0].id : ""
 }
 
 output "intranet_network_acl_id" {
   description = "The ID of the intra network ACL"
-  value       = aws_network_acl.intra.id
+  value       = local.create_intranet ? aws_network_acl.intra[0].id : ""
 }
 
 output "private_network_acl_id" {
   description = "The ID of the privatenetwork ACL"
-  value       = aws_network_acl.private.id
+  value       = local.create_private ? aws_network_acl.private[0].id : ""
 }
 
 output "database_network_acl_id" {
   description = "The ID of the database network ACL"
-  value       = aws_network_acl.database.id
+  value       = local.create_database ? aws_network_acl.database[0].id : ""
 }
 
 output "firewall_network_acl_id" {
