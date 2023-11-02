@@ -142,6 +142,12 @@ variable "firewall_inbound_acl_rules" {
   ]
 }
 
+variable "enable_nat_gateway" {
+  description = "Should be true if you want to provision NAT Gateways for each of your private networks"
+  type        = bool
+  default     = true
+}
+
 variable "firewall_outbound_acl_rules" {
   description = "Firewall subnets outbound network ACL rules"
   type        = list(map(string))

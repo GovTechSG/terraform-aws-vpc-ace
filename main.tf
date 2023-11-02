@@ -16,10 +16,10 @@ locals {
 
 # creates the elastic IPs which the NAT gateways are allocated
 resource "aws_eip" "nat" {
-  count = local.eip_count
+  count = var.enable_nat_gateway ? local.eip_count : 0
 
-  vpc  = true
-  tags = merge(var.tags, local.tags, var.folder)
+  domain = "vpc"
+  tags   = merge(var.tags, local.tags, var.folder)
 }
 
 # virtual private cloud creator
@@ -92,7 +92,7 @@ module "vpc" {
   }
 
   # nat stuff
-  enable_nat_gateway                 = true
+  enable_nat_gateway                 = var.enable_nat_gateway
   single_nat_gateway                 = false
   one_nat_gateway_per_az             = true
   reuse_nat_ips                      = true
@@ -136,6 +136,7 @@ module "vpc" {
 #######################
 
 resource "aws_default_security_group" "default" {
+  count  = var.manage_default_security_group ? 1 : 0
   vpc_id = module.vpc.vpc_id
   tags   = merge(var.tags, local.tags, var.folder)
 
