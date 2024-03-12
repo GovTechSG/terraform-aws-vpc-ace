@@ -491,7 +491,7 @@ resource "aws_network_acl_rule" "private_outbound_allow_all_ephemeral_rule" {
   count          = local.create_private ? 1 : 0
   network_acl_id = aws_network_acl.private[0].id
   rule_number    = 140
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 700
   to_port        = 65535
@@ -806,7 +806,7 @@ resource "aws_network_acl_rule" "intra_inbound_allow_all_ephemeral_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
   rule_number    = 140
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 700
   to_port        = 65535
@@ -817,7 +817,7 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
   rule_number    = 140
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 700
   to_port        = 65535
@@ -1018,7 +1018,7 @@ resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule" {
   count          = local.create_database ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
   rule_number    = 140
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 1024
   to_port        = 65535
@@ -1029,7 +1029,7 @@ resource "aws_network_acl_rule" "database_outbound_allow_all_ephemeral_rule" {
   count          = local.create_database ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
   rule_number    = 140
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 1024
   to_port        = 65535
