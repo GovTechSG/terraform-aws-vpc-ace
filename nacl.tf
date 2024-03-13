@@ -1004,17 +1004,17 @@ resource "aws_network_acl_rule" "database_inbound_rdp_rule_deny" {
   count          = local.create_database ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
   cidr_block     = "0.0.0.0/0"
-  rule_number    = 105
+  rule_number    = 110
   protocol       = "tcp"
   from_port      = 3389
   to_port        = 3389
   rule_action    = "deny"
 }
 
-resource "aws_network_acl_rule" "database" {
+resource "aws_network_acl_rule" "database_outbound_rdp_rule_deny" {
   count          = local.create_database ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
-  rule_number    = 105
+  rule_number    = 110
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 3389
@@ -1023,10 +1023,33 @@ resource "aws_network_acl_rule" "database" {
   egress         = true
 }
 
+resource "aws_network_acl_rule" "database_inbound_ssh_rule_deny" {
+  count          = local.create_database ? 1 : 0
+  network_acl_id = aws_network_acl.database[0].id
+  cidr_block     = "0.0.0.0/0"
+  rule_number    = 120
+  protocol       = "tcp"
+  from_port      = 22
+  to_port        = 22
+  rule_action    = "deny"
+}
+
+resource "aws_network_acl_rule" "database_outbound_ssh_rule_deny" {
+  count          = local.create_database ? 1 : 0
+  network_acl_id = aws_network_acl.database[0].id
+  rule_number    = 120
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 22
+  to_port        = 22
+  rule_action    = "deny"
+  egress         = true
+}
+
 resource "aws_network_acl_rule" "database_inbound_allow_443_rule" {
   count          = local.create_database ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
-  rule_number    = 110
+  rule_number    = 200
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 443
@@ -1037,7 +1060,7 @@ resource "aws_network_acl_rule" "database_inbound_allow_443_rule" {
 resource "aws_network_acl_rule" "database_outbound_allow_443_rule" {
   count          = local.create_database ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
-  rule_number    = 110
+  rule_number    = 200
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 443
@@ -1046,33 +1069,10 @@ resource "aws_network_acl_rule" "database_outbound_allow_443_rule" {
   egress         = "true"
 }
 
-resource "aws_network_acl_rule" "database_inbound_ssh_rule_deny" {
-  count          = local.create_database ? 1 : 0
-  network_acl_id = aws_network_acl.database[0].id
-  cidr_block     = "0.0.0.0/0"
-  rule_number    = 139
-  protocol       = "tcp"
-  from_port      = 22
-  to_port        = 22
-  rule_action    = "deny"
-}
-
-resource "aws_network_acl_rule" "database_outbound_ssh_rule_deny" {
-  count          = local.create_database ? 1 : 0
-  network_acl_id = aws_network_acl.database[0].id
-  rule_number    = 139
-  cidr_block     = "0.0.0.0/0"
-  protocol       = "tcp"
-  from_port      = 22
-  to_port        = 22
-  rule_action    = "deny"
-  egress         = true
-}
-
 resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule" {
   count          = local.create_database ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
-  rule_number    = 140
+  rule_number    = 1000
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 1024
@@ -1083,8 +1083,31 @@ resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule" {
 resource "aws_network_acl_rule" "database_outbound_allow_all_ephemeral_rule" {
   count          = local.create_database ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
-  rule_number    = 140
+  rule_number    = 1000
   cidr_block     = module.vpc.vpc_cidr_block
+  protocol       = "tcp"
+  from_port      = 1024
+  to_port        = 65535
+  rule_action    = "allow"
+  egress         = true
+}
+
+resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule_secondary_cidr" {
+  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
+  network_acl_id = aws_network_acl.database[0].id
+  rule_number    = 1010 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "tcp"
+  from_port      = 1024
+  to_port        = 65535
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "database_outbound_allow_all_ephemeral_rule_secondary_cidr" {
+  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
+  network_acl_id = aws_network_acl.database[0].id
+  rule_number    = 1010 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 1024
   to_port        = 65535
