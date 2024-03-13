@@ -63,7 +63,7 @@ resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
   cidr_block     = "0.0.0.0/0"
-  rule_number    = 105
+  rule_number    = 110
   protocol       = "tcp"
   from_port      = 3389
   to_port        = 3389
@@ -74,7 +74,7 @@ resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny_udp" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
   cidr_block     = "0.0.0.0/0"
-  rule_number    = 106
+  rule_number    = 120
   protocol       = "udp"
   from_port      = 3389
   to_port        = 3389
@@ -84,7 +84,7 @@ resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny_udp" {
 resource "aws_network_acl_rule" "public_outbound_rdp_rule_deny" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 105
+  rule_number    = 110
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 3389
@@ -96,7 +96,7 @@ resource "aws_network_acl_rule" "public_outbound_rdp_rule_deny" {
 resource "aws_network_acl_rule" "public_inbound_ssh_rule" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 120
+  rule_number    = 130
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 22
@@ -107,7 +107,7 @@ resource "aws_network_acl_rule" "public_inbound_ssh_rule" {
 resource "aws_network_acl_rule" "public_outbound_ssh_rule" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 120
+  rule_number    = 130
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 22
@@ -119,7 +119,7 @@ resource "aws_network_acl_rule" "public_outbound_ssh_rule" {
 resource "aws_network_acl_rule" "public_inbound_ssh_rule_secondary_cidr" {
   count          = local.create_public ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 121 + count.index
+  rule_number    = 140 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 22
@@ -130,7 +130,7 @@ resource "aws_network_acl_rule" "public_inbound_ssh_rule_secondary_cidr" {
 resource "aws_network_acl_rule" "public_outbound_ssh_rule_secondary_cidr" {
   count          = local.create_public ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 121 + count.index
+  rule_number    = 140 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 22
@@ -143,7 +143,7 @@ resource "aws_network_acl_rule" "public_inbound_ssh_rule_deny" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
   cidr_block     = "0.0.0.0/0"
-  rule_number    = 139
+  rule_number    = 150
   protocol       = "tcp"
   from_port      = 22
   to_port        = 22
@@ -153,7 +153,7 @@ resource "aws_network_acl_rule" "public_inbound_ssh_rule_deny" {
 resource "aws_network_acl_rule" "public_outbound_ssh_rule_deny" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 139
+  rule_number    = 150
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 22
@@ -165,7 +165,7 @@ resource "aws_network_acl_rule" "public_outbound_ssh_rule_deny" {
 resource "aws_network_acl_rule" "public_inbound_allow_all_rule" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 140
+  rule_number    = 160
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 1
@@ -176,7 +176,7 @@ resource "aws_network_acl_rule" "public_inbound_allow_all_rule" {
 resource "aws_network_acl_rule" "public_outbound_allow_all_rule" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 140
+  rule_number    = 160
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 1
