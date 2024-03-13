@@ -679,7 +679,7 @@ resource "aws_network_acl_rule" "intra_inbound_rdp_rule_deny" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
   cidr_block     = "0.0.0.0/0"
-  rule_number    = 105
+  rule_number    = 110
   protocol       = "tcp"
   from_port      = 3389
   to_port        = 3389
@@ -689,7 +689,7 @@ resource "aws_network_acl_rule" "intra_inbound_rdp_rule_deny" {
 resource "aws_network_acl_rule" "intra_outbound_rdp_rule_deny" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 105
+  rule_number    = 110
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 3389
@@ -701,7 +701,7 @@ resource "aws_network_acl_rule" "intra_outbound_rdp_rule_deny" {
 resource "aws_network_acl_rule" "intranet_inbound_allow_443_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 110
+  rule_number    = 200
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 443
@@ -712,7 +712,7 @@ resource "aws_network_acl_rule" "intranet_inbound_allow_443_rule" {
 resource "aws_network_acl_rule" "intranet_outbound_allow_443_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 110
+  rule_number    = 200
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 443
@@ -724,7 +724,7 @@ resource "aws_network_acl_rule" "intranet_outbound_allow_443_rule" {
 resource "aws_network_acl_rule" "intranet_inbound_nfs_111_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 115
+  rule_number    = 210
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 111
@@ -735,7 +735,7 @@ resource "aws_network_acl_rule" "intranet_inbound_nfs_111_rule" {
 resource "aws_network_acl_rule" "intranet_outbound_nfs_111_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 115
+  rule_number    = 210
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 111
@@ -747,7 +747,7 @@ resource "aws_network_acl_rule" "intranet_outbound_nfs_111_rule" {
 resource "aws_network_acl_rule" "intranet_inbound_nfs_111_rule_secondary_cidr" {
   count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 116 + count.index
+  rule_number    = 220 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 111
@@ -758,7 +758,7 @@ resource "aws_network_acl_rule" "intranet_inbound_nfs_111_rule_secondary_cidr" {
 resource "aws_network_acl_rule" "intranet_outbound_nfs_111_rule_secondary_cidr" {
   count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 116 + count.index
+  rule_number    = 220 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 111
@@ -770,7 +770,7 @@ resource "aws_network_acl_rule" "intranet_outbound_nfs_111_rule_secondary_cidr" 
 resource "aws_network_acl_rule" "intranet_inbound_ssh_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 120
+  rule_number    = 230
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 22
@@ -781,7 +781,7 @@ resource "aws_network_acl_rule" "intranet_inbound_ssh_rule" {
 resource "aws_network_acl_rule" "intranet_outbound_ssh_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 120
+  rule_number    = 230
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 22
@@ -793,7 +793,7 @@ resource "aws_network_acl_rule" "intranet_outbound_ssh_rule" {
 resource "aws_network_acl_rule" "intranet_inbound_ssh_rule_secondary_cidr" {
   count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 121 + count.index
+  rule_number    = 240 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 22
@@ -804,7 +804,7 @@ resource "aws_network_acl_rule" "intranet_inbound_ssh_rule_secondary_cidr" {
 resource "aws_network_acl_rule" "intranet_outbound_ssh_rule_secondary_cidr" {
   count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 121 + count.index
+  rule_number    = 240 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 22
@@ -816,8 +816,8 @@ resource "aws_network_acl_rule" "intranet_outbound_ssh_rule_secondary_cidr" {
 resource "aws_network_acl_rule" "intra_inbound_ssh_rule_deny" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 250
   cidr_block     = "0.0.0.0/0"
-  rule_number    = 139
   protocol       = "tcp"
   from_port      = 22
   to_port        = 22
@@ -827,7 +827,7 @@ resource "aws_network_acl_rule" "intra_inbound_ssh_rule_deny" {
 resource "aws_network_acl_rule" "intra_outbound_ssh_rule_deny" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 139
+  rule_number    = 250
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 22
@@ -836,103 +836,10 @@ resource "aws_network_acl_rule" "intra_outbound_ssh_rule_deny" {
   egress         = true
 }
 
-resource "aws_network_acl_rule" "intra_inbound_allow_all_ephemeral_rule" {
-  count          = local.create_intranet ? 1 : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 140
-  cidr_block     = module.vpc.vpc_cidr_block
-  protocol       = "tcp"
-  from_port      = 700
-  to_port        = 65535
-  rule_action    = "allow"
-}
-
-resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule" {
-  count          = local.create_intranet ? 1 : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 140
-  cidr_block     = module.vpc.vpc_cidr_block
-  protocol       = "tcp"
-  from_port      = 700
-  to_port        = 65535
-  rule_action    = "allow"
-  egress         = "true"
-}
-
-resource "aws_network_acl_rule" "intra_inbound_allow_all_udp" {
-  count          = local.create_intranet ? 1 : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 141
-  cidr_block     = module.vpc.vpc_cidr_block
-  protocol       = "udp"
-  from_port      = 1
-  to_port        = 65535
-  rule_action    = "allow"
-}
-
-resource "aws_network_acl_rule" "intra_outbound_allow_all_udp" {
-  count          = local.create_intranet ? 1 : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 141
-  cidr_block     = module.vpc.vpc_cidr_block
-  protocol       = "udp"
-  from_port      = 1
-  to_port        = 65535
-  rule_action    = "allow"
-  egress         = "true"
-}
-
-resource "aws_network_acl_rule" "intra_inbound_allow_all_udp_secondary_cidr" {
-  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 142 + count.index
-  cidr_block     = var.secondary_cidr_blocks[count.index]
-  protocol       = "udp"
-  from_port      = 1
-  to_port        = 65535
-  rule_action    = "allow"
-}
-
-resource "aws_network_acl_rule" "intra_outbound_allow_all_udp_secondary_cidr" {
-  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 142 + count.index
-  cidr_block     = var.secondary_cidr_blocks[count.index]
-  protocol       = "udp"
-  from_port      = 1
-  to_port        = 65535
-  rule_action    = "allow"
-  egress         = true
-}
-
-resource "aws_network_acl_rule" "intra_inbound_allow_tcp_dns" {
-  count          = local.create_intranet ? 1 : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 147
-  cidr_block     = "0.0.0.0/0"
-  protocol       = "tcp"
-  from_port      = 53
-  to_port        = 53
-  rule_action    = "allow"
-}
-
-resource "aws_network_acl_rule" "intra_outbound_allow_tcp_dns" {
-  count          = local.create_intranet ? 1 : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 147
-  cidr_block     = "0.0.0.0/0"
-  protocol       = "tcp"
-  from_port      = 53
-  to_port        = 53
-  rule_action    = "allow"
-  egress         = "true"
-}
-
-
 resource "aws_network_acl_rule" "intranet_inbound_bgp_179_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 153
+  rule_number    = 910
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 179
@@ -943,7 +850,7 @@ resource "aws_network_acl_rule" "intranet_inbound_bgp_179_rule" {
 resource "aws_network_acl_rule" "intranet_outbound_bgp_179_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 153
+  rule_number    = 910
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 179
@@ -955,7 +862,7 @@ resource "aws_network_acl_rule" "intranet_outbound_bgp_179_rule" {
 resource "aws_network_acl_rule" "intranet_inbound_bgp_179_rule_secondary_cidr" {
   count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 154 + count.index
+  rule_number    = 920 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 179
@@ -966,7 +873,7 @@ resource "aws_network_acl_rule" "intranet_inbound_bgp_179_rule_secondary_cidr" {
 resource "aws_network_acl_rule" "intranet_outbound_bgp_179_rule_secondary_cidr" {
   count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 154 + count.index
+  rule_number    = 920 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 179
@@ -975,6 +882,120 @@ resource "aws_network_acl_rule" "intranet_outbound_bgp_179_rule_secondary_cidr" 
   egress         = true
 }
 
+resource "aws_network_acl_rule" "intra_inbound_allow_all_udp" {
+  count          = local.create_intranet ? 1 : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1000
+  cidr_block     = module.vpc.vpc_cidr_block
+  protocol       = "udp"
+  from_port      = 1
+  to_port        = 65535
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "intra_outbound_allow_all_udp" {
+  count          = local.create_intranet ? 1 : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1000
+  cidr_block     = module.vpc.vpc_cidr_block
+  protocol       = "udp"
+  from_port      = 1
+  to_port        = 65535
+  rule_action    = "allow"
+  egress         = "true"
+}
+
+resource "aws_network_acl_rule" "intra_inbound_allow_all_udp_secondary_cidr" {
+  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1010 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "udp"
+  from_port      = 1
+  to_port        = 65535
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "intra_outbound_allow_all_udp_secondary_cidr" {
+  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1010 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "udp"
+  from_port      = 1
+  to_port        = 65535
+  rule_action    = "allow"
+  egress         = true
+}
+
+resource "aws_network_acl_rule" "intra_inbound_allow_all_ephemeral_rule" {
+  count          = local.create_intranet ? 1 : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1100
+  cidr_block     = module.vpc.vpc_cidr_block
+  protocol       = "tcp"
+  from_port      = 700
+  to_port        = 65535
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule" {
+  count          = local.create_intranet ? 1 : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1100
+  cidr_block     = module.vpc.vpc_cidr_block
+  protocol       = "tcp"
+  from_port      = 700
+  to_port        = 65535
+  rule_action    = "allow"
+  egress         = "true"
+}
+
+resource "aws_network_acl_rule" "intra_inbound_allow_all_ephemeral_rule_secondary_cidr" {
+  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1110 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "tcp"
+  from_port      = 700
+  to_port        = 65535
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule_secondary_cidr" {
+  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1110 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "tcp"
+  from_port      = 700
+  to_port        = 65535
+  rule_action    = "allow"
+  egress         = "true"
+}
+
+resource "aws_network_acl_rule" "intra_inbound_allow_tcp_dns" {
+  count          = local.create_intranet ? 1 : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1200
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 53
+  to_port        = 53
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "intra_outbound_allow_tcp_dns" {
+  count          = local.create_intranet ? 1 : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1200
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 53
+  to_port        = 53
+  rule_action    = "allow"
+  egress         = "true"
+}
 
 ###########################
 # Database subnet ACL
