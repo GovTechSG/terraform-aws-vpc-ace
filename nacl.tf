@@ -70,6 +70,18 @@ resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny" {
   rule_action    = "deny"
 }
 
+resource "aws_network_acl_rule" "public_outbound_rdp_rule_deny" {
+  count          = local.create_public ? 1 : 0
+  network_acl_id = aws_network_acl.public[0].id
+  rule_number    = 110
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 3389
+  to_port        = 3389
+  rule_action    = "deny"
+  egress         = true
+}
+
 resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny_udp" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
@@ -81,12 +93,12 @@ resource "aws_network_acl_rule" "public_inbound_rdp_rule_deny_udp" {
   rule_action    = "deny"
 }
 
-resource "aws_network_acl_rule" "public_outbound_rdp_rule_deny" {
+resource "aws_network_acl_rule" "public_outbound_rdp_rule_deny_udp" {
   count          = local.create_public ? 1 : 0
   network_acl_id = aws_network_acl.public[0].id
-  rule_number    = 110
+  rule_number    = 120
   cidr_block     = "0.0.0.0/0"
-  protocol       = "tcp"
+  protocol       = "udp"
   from_port      = 3389
   to_port        = 3389
   rule_action    = "deny"
