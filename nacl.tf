@@ -986,6 +986,26 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule_seconda
   egress         = "true"
 }
 
+# To allow traffic between VPCs connected to a transit gateway, you need to open the necessary ports in the
+# security groups attached to the network interfaces in those VPCs.
+# The key ports required for transit gateway connectivity are:
+# - Port 443 for HTTPS communication between the VPCs and transit gateway control plane.
+# - Port 2049 for NFS traffic if you enable file sharing using NFS.
+# - Ports from 32768 to 61000 for Generic Routing Encapsulation (GRE) tunnels if you use appliance mode.
+#     Appliance mode allows you to deploy virtual appliances for functions like routing,
+#     firewalling etc across connected VPCs.
+resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule_tgw" {
+  count          = local.create_intranet ? 1 : 0
+  network_acl_id = aws_network_acl.intra[0].id
+  rule_number    = 1150
+  cidr_block     = "0.0.0.0/0"
+  protocol       = "tcp"
+  from_port      = 32768
+  to_port        = 61000
+  rule_action    = "allow"
+  egress         = "true"
+}
+
 resource "aws_network_acl_rule" "intra_inbound_allow_tcp_dns" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
