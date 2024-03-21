@@ -574,7 +574,7 @@ resource "aws_network_acl_rule" "private_inbound_allow_all_ephemeral_rule" {
   rule_number    = 1100
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
-  from_port      = 700
+  from_port      = 1024
   to_port        = 65535
   rule_action    = "allow"
 }
@@ -585,21 +585,10 @@ resource "aws_network_acl_rule" "private_outbound_allow_all_ephemeral_rule" {
   rule_number    = 1100
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
-  from_port      = 700
+  from_port      = 1024
   to_port        = 65535
   rule_action    = "allow"
   egress         = "true"
-}
-
-resource "aws_network_acl_rule" "private_inbound_allow_all_ephemeral_rule_secondary_cidr" {
-  count          = local.create_private ? length(var.secondary_cidr_blocks) : 0
-  network_acl_id = aws_network_acl.private[0].id
-  rule_number    = 1110 + count.index
-  cidr_block     = var.secondary_cidr_blocks[count.index]
-  protocol       = "tcp"
-  from_port      = 700
-  to_port        = 65535
-  rule_action    = "allow"
 }
 
 resource "aws_network_acl_rule" "private_outbound_allow_all_ephemeral_rule_secondary_cidr" {
@@ -608,7 +597,7 @@ resource "aws_network_acl_rule" "private_outbound_allow_all_ephemeral_rule_secon
   rule_number    = 1110 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
-  from_port      = 700
+  from_port      = 1024
   to_port        = 65535
   rule_action    = "allow"
   egress         = "true"
@@ -944,9 +933,9 @@ resource "aws_network_acl_rule" "intra_inbound_allow_all_ephemeral_rule" {
   count          = local.create_intranet ? 1 : 0
   network_acl_id = aws_network_acl.intra[0].id
   rule_number    = 1100
-  cidr_block     = module.vpc.vpc_cidr_block
+  cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
-  from_port      = 700
+  from_port      = 1024
   to_port        = 65535
   rule_action    = "allow"
 }
@@ -957,21 +946,10 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule" {
   rule_number    = 1100
   cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
-  from_port      = 700
+  from_port      = 1024
   to_port        = 65535
   rule_action    = "allow"
   egress         = "true"
-}
-
-resource "aws_network_acl_rule" "intra_inbound_allow_all_ephemeral_rule_secondary_cidr" {
-  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
-  network_acl_id = aws_network_acl.intra[0].id
-  rule_number    = 1110 + count.index
-  cidr_block     = var.secondary_cidr_blocks[count.index]
-  protocol       = "tcp"
-  from_port      = 700
-  to_port        = 65535
-  rule_action    = "allow"
 }
 
 resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule_secondary_cidr" {
@@ -980,7 +958,7 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule_seconda
   rule_number    = 1110 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
-  from_port      = 700
+  from_port      = 1024
   to_port        = 65535
   rule_action    = "allow"
   egress         = "true"
