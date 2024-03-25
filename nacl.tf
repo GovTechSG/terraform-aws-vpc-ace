@@ -1103,7 +1103,7 @@ resource "aws_network_acl_rule" "database_outbound_allow_all_ephemeral_rule" {
 }
 
 resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule_secondary_cidr" {
-  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
+  count          = local.create_database ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.database[0].id
   rule_number    = 1010 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
@@ -1114,7 +1114,7 @@ resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule_secon
 }
 
 resource "aws_network_acl_rule" "database_outbound_allow_all_ephemeral_rule_secondary_cidr" {
-  count          = local.create_intranet ? length(var.secondary_cidr_blocks) : 0
+  count          = local.create_database ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.database[0].id
   rule_number    = 1010 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
