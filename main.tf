@@ -24,7 +24,7 @@ resource "aws_eip" "nat" {
 
 # virtual private cloud creator
 module "vpc" {
-  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v4.0.0"
+  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v4.0.4"
 
   # meta data
   name                  = var.vpc_name
@@ -53,6 +53,22 @@ module "vpc" {
   firewall_dedicated_network_acl = var.firewall_dedicated_network_acl
   firewall_inbound_acl_rules     = var.firewall_inbound_acl_rules
   firewall_outbound_acl_rules    = var.firewall_outbound_acl_rules
+
+  public_dedicated_network_acl = var.public_dedicated_network_acl
+  public_inbound_acl_rules     = var.public_inbound_acl_rules
+  public_outbound_acl_rules    = var.public_outbound_acl_rules
+
+  private_dedicated_network_acl = var.private_dedicated_network_acl
+  private_inbound_acl_rules     = var.private_inbound_acl_rules
+  private_outbound_acl_rules    = var.private_outbound_acl_rules
+
+  intra_dedicated_network_acl = var.intra_dedicated_network_acl
+  intra_inbound_acl_rules     = var.intra_inbound_acl_rules
+  intra_outbound_acl_rules    = var.intra_outbound_acl_rules
+
+  database_dedicated_network_acl = var.database_dedicated_network_acl
+  database_inbound_acl_rules     = var.database_inbound_acl_rules
+  database_outbound_acl_rules    = var.database_outbound_acl_rules
 
   private_subnets = var.private_subnets
 
