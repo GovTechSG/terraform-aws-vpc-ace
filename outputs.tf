@@ -194,22 +194,22 @@ output "https_security_group_id" {
 
 output "public_network_acl_id" {
   description = "The ID of the public network ACL"
-  value       = local.create_public ? aws_network_acl.public[0].id : ""
+  value       = local.create_public && !var.public_dedicated_network_acl ? aws_network_acl.public[0].id : ""
 }
 
 output "intranet_network_acl_id" {
   description = "The ID of the intra network ACL"
-  value       = local.create_intranet ? aws_network_acl.intra[0].id : ""
+  value       = local.create_intranet && !var.intra_dedicated_network_acl ? aws_network_acl.intra[0].id : ""
 }
 
 output "private_network_acl_id" {
   description = "The ID of the privatenetwork ACL"
-  value       = local.create_private ? aws_network_acl.private[0].id : ""
+  value       = local.create_private && !var.private_dedicated_network_acl ? aws_network_acl.private[0].id : ""
 }
 
 output "database_network_acl_id" {
   description = "The ID of the database network ACL"
-  value       = local.create_database ? aws_network_acl.database[0].id : ""
+  value       = local.create_database && !var.database_dedicated_network_acl ? aws_network_acl.database[0].id : ""
 }
 
 output "firewall_network_acl_id" {
