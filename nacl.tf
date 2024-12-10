@@ -651,6 +651,29 @@ resource "aws_network_acl_rule" "private_outbound_allow_tcp_dns" {
   egress         = "true"
 }
 
+resource "aws_network_acl_rule" "private_inbound_allow_ip_in_ip" {
+  count          = local.create_private && !var.private_dedicated_network_acl ? 1 : 0
+  network_acl_id = aws_network_acl.private[0].id
+  cidr_block     = module.vpc.vpc_cidr_block
+  rule_number    = 1300
+  protocol       = "4"
+  from_port      = 0
+  to_port        = 0
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "private_outbound_allow_ip_in_ip" {
+  count          = local.create_private && !var.private_dedicated_network_acl ? 1 : 0
+  network_acl_id = aws_network_acl.private[0].id
+  rule_number    = 1300
+  cidr_block     = module.vpc.vpc_cidr_block
+  protocol       = "4"
+  from_port      = 0
+  to_port        = 0
+  rule_action    = "allow"
+  egress         = "true"
+}
+
 ###########################
 # Intranet subnet ACL
 ###########################
