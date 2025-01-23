@@ -969,7 +969,10 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule_seconda
 # The key ports required for transit gateway connectivity are:
 # - Port 443 for HTTPS communication between the VPCs and transit gateway control plane.
 # - Port 2049 for NFS traffic if you enable file sharing using NFS.
-# - Ports from 32768 to 61000 for Generic Routing Encapsulation (GRE) tunnels if you use appliance mode.
+# - Ports from 1024 to 65535 for
+# ALB: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-troubleshooting.html
+# The network ACL associated with the subnets for your load balancer nodes must allow inbound traffic on the ephemeral ports and outbound traffic on the health check and ephemeral ports.
+# Generic Routing Encapsulation (GRE) tunnels if you use appliance mode.
 #     Appliance mode allows you to deploy virtual appliances for functions like routing,
 #     firewalling etc across connected VPCs.
 resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule_tgw" {
@@ -978,8 +981,8 @@ resource "aws_network_acl_rule" "intra_outbound_allow_all_ephemeral_rule_tgw" {
   rule_number    = 1150
   cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
-  from_port      = 32768
-  to_port        = 61000
+  from_port      = 1024
+  to_port        = 65535
   rule_action    = "allow"
   egress         = "true"
 }
