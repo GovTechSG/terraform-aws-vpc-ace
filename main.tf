@@ -119,9 +119,11 @@ module "vpc" {
   enable_dns_hostnames = true
 
   # nacl
-  manage_default_network_acl = var.manage_default_network_acl
-  default_network_acl_name   = var.default_network_acl_name
-  default_network_acl_tags   = var.default_network_acl_tags
+  manage_default_network_acl  = var.manage_default_network_acl
+  default_network_acl_name    = var.default_network_acl_name
+  default_network_acl_tags    = var.default_network_acl_tags
+  default_network_acl_ingress = var.default_network_acl_ingress
+  default_network_acl_egress  = var.default_network_acl_egress
 
   # others
   map_public_ip_on_launch = var.map_public_ip_on_launch
@@ -169,23 +171,6 @@ module "vpc" {
 #######################
 # Security Groups
 #######################
-
-resource "aws_default_security_group" "default" {
-  count  = var.manage_default_security_group ? 1 : 0
-  vpc_id = module.vpc.vpc_id
-  tags   = merge(var.tags, local.tags, var.folder)
-
-  dynamic "ingress" {
-    for_each = var.default_security_group_rules
-    content {
-      from_port   = ingress.key
-      to_port     = ingress.key
-      cidr_blocks = ingress.value
-      protocol    = "tcp"
-    }
-  }
-}
-
 resource "aws_security_group" "allow_443" {
   name        = "${var.vpc_name}-${local.cidr_ip}-allow-443"
   description = "Allow port 443 traffic to and from VPC cidr range"
@@ -195,14 +180,14 @@ resource "aws_security_group" "allow_443" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = var.secondary_cidr_blocks
+    cidr_blocks = length(var.secondary_cidr_blocks) > 0 ? var.secondary_cidr_blocks : [var.vpc_cidr]
   }
 
   egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = var.secondary_cidr_blocks
+    cidr_blocks = length(var.secondary_cidr_blocks) > 0 ? var.secondary_cidr_blocks : [var.vpc_cidr]
   }
 
   tags = {
