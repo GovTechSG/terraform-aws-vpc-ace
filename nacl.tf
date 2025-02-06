@@ -5,27 +5,6 @@ locals {
   create_database = length(var.database_subnets) > 0
 }
 
-# override default network acl
-
-resource "aws_default_network_acl" "default" {
-  count                  = var.manage_default_network_acl ? 1 : 0
-  default_network_acl_id = tolist(data.aws_network_acls.default.ids)[0]
-
-  tags = merge({ "Name" = "${var.vpc_name}-default" }, var.tags, local.tags, var.folder)
-  lifecycle {
-    ignore_changes = [subnet_ids]
-  }
-}
-
-data "aws_network_acls" "default" {
-  vpc_id = module.vpc.vpc_id
-
-  filter {
-    name   = "default"
-    values = ["true"]
-  }
-}
-
 resource "aws_network_acl" "private" {
   count      = local.create_private && !var.private_dedicated_network_acl ? 1 : 0
   vpc_id     = module.vpc.vpc_id
