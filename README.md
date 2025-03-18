@@ -324,6 +324,8 @@ No requirements.
 | [aws_security_group.allow_443](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.allow_http_https_outgoing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
+| [aws_network_acls.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/network_acls) | data source |
+| [aws_cloudwatch_log_subscription_filter.flow_log](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_subscription_filter) | resource |
 
 ## Inputs
 
@@ -407,6 +409,7 @@ No requirements.
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC id for use in cases where VPC was already created and you would like to reuse it with this module. Not required if create\_vpc = true | `string` | `""` | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name of VPC | `string` | n/a | yes |
 | <a name="input_vpc_tags"></a> [vpc\_tags](#input\_vpc\_tags) | Tags to apply to VPC | `map(any)` | `{}` | no |
+| <a name="input_lg_filters"></a> [lg\_filters](#input\_lg\_filters) | Log group filters to create for Network Firewall logs | <pre>map(object({<br> naming_suffix = string<br> role_arn = string<br> filter_pattern = string<br> destination_arn = string<br> distribution = string<br>}))</pre> | `{}` | no |
 
 ## Outputs
 

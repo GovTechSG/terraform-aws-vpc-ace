@@ -12,6 +12,9 @@ locals {
   az_names = slice(data.aws_availability_zones.available.names, 0, var.number_of_azs)
 
   vpc_tags = merge(var.vpc_tags)
+
+  vpc_flow_log_name_chunks = split(":", module.vpc.vpc_flow_log_destination_arn)
+  vpc_flow_log_name = local.vpc_flow_log_name_chunks[length(local.vpc_flow_log_name_chunks) - 1]
 }
 
 # creates the elastic IPs which the NAT gateways are allocated
@@ -231,4 +234,18 @@ resource "aws_security_group" "allow_http_https_outgoing" {
   tags = {
     Name = "Allow HTTP/HTTPS Outgoing"
   }
+}
+
+#######################
+# Flow Logs 
+#######################
+
+resource "aws_cloudwatch_log_subscription_filter" "flow_log" {
+  for_each        = var.create_flow_log_cloudwatch_log_group ? var.lg_filters : {}
+  name            = "${local.vpc_flow_log_name}-${each.value.naming_suffix}"
+  role_arn        = each.value.role_arn
+  log_group_name  = local.vpc_flow_log_name
+  filter_pattern  = each.value.filter_pattern
+  destination_arn = each.value.destination_arn
+  distribution    = each.value.distribution
 }
