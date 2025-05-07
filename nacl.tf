@@ -1042,7 +1042,7 @@ resource "aws_network_acl_rule" "database_inbound_allow_443_rule" {
   count          = local.create_database && !var.database_dedicated_network_acl ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
   rule_number    = 200
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 443
   to_port        = 443
@@ -1053,7 +1053,7 @@ resource "aws_network_acl_rule" "database_outbound_allow_443_rule" {
   count          = local.create_database && !var.database_dedicated_network_acl ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
   rule_number    = 200
-  cidr_block     = "0.0.0.0/0"
+  cidr_block     = module.vpc.vpc_cidr_block
   protocol       = "tcp"
   from_port      = 443
   to_port        = 443
@@ -1061,6 +1061,28 @@ resource "aws_network_acl_rule" "database_outbound_allow_443_rule" {
   egress         = "true"
 }
 
+resource "aws_network_acl_rule" "database_inbound_allow_443_rule_secondary_cidr" {
+  count          = local.create_database && !var.database_dedicated_network_acl ? length(var.secondary_cidr_blocks) : 0
+  network_acl_id = aws_network_acl.database[0].id
+  rule_number    = 200 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "tcp"
+  from_port      = 443
+  to_port        = 443
+  rule_action    = "allow"
+}
+
+resource "aws_network_acl_rule" "database_outbound_allow_443_rule_secondary_cidr" {
+  count          = local.create_database && !var.database_dedicated_network_acl ? length(var.secondary_cidr_blocks) : 0
+  network_acl_id = aws_network_acl.database[0].id
+  rule_number    = 200 + count.index
+  cidr_block     = var.secondary_cidr_blocks[count.index]
+  protocol       = "tcp"
+  from_port      = 443
+  to_port        = 443
+  rule_action    = "allow"
+  egress         = "true"
+}
 resource "aws_network_acl_rule" "database_inbound_allow_all_ephemeral_rule" {
   count          = local.create_database && !var.database_dedicated_network_acl ? 1 : 0
   network_acl_id = aws_network_acl.database[0].id
