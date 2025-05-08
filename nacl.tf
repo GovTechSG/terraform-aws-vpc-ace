@@ -1064,7 +1064,7 @@ resource "aws_network_acl_rule" "database_outbound_allow_443_rule" {
 resource "aws_network_acl_rule" "database_inbound_allow_443_rule_secondary_cidr" {
   count          = local.create_database && !var.database_dedicated_network_acl ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.database[0].id
-  rule_number    = 200 + count.index
+  rule_number    = 210 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 443
@@ -1075,7 +1075,7 @@ resource "aws_network_acl_rule" "database_inbound_allow_443_rule_secondary_cidr"
 resource "aws_network_acl_rule" "database_outbound_allow_443_rule_secondary_cidr" {
   count          = local.create_database && !var.database_dedicated_network_acl ? length(var.secondary_cidr_blocks) : 0
   network_acl_id = aws_network_acl.database[0].id
-  rule_number    = 200 + count.index
+  rule_number    = 210 + count.index
   cidr_block     = var.secondary_cidr_blocks[count.index]
   protocol       = "tcp"
   from_port      = 443
