@@ -562,7 +562,7 @@ resource "aws_network_acl_rule" "private_outbound_allow_all_ephemeral_rule" {
   count          = local.create_private && !var.private_dedicated_network_acl ? 1 : 0
   network_acl_id = aws_network_acl.private[0].id
   rule_number    = 1100
-  cidr_block     = module.vpc.vpc_cidr_block
+  cidr_block     = "0.0.0.0/0"
   protocol       = "tcp"
   from_port      = 1024
   to_port        = 65535
