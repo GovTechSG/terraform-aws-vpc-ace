@@ -44,7 +44,8 @@ module "vpc" {
     {
       "kubernetes.io/role/elb" = "1",
       "AccessType"             = "internet ingress/egress"
-    }
+    },
+    var.public_subnet_tags
   )
 
   public_route_table_tags = {
@@ -81,6 +82,7 @@ module "vpc" {
       "kubernetes.io/role/internal-elb" = "1",
       "AccessType"                      = "internet egress"
     }
+    var.private_subnet_tags
   )
 
   private_route_table_tags = {
@@ -93,7 +95,8 @@ module "vpc" {
     var.eks_cluster_tags,
     {
       "AccessType" = "intranet"
-    }
+    },
+    var.intra_subnet_tags
   )
 
   intra_route_table_tags = {
@@ -102,9 +105,12 @@ module "vpc" {
 
   database_subnets = var.database_subnets
 
-  database_subnet_tags = {
-    "AccessType" = "database"
-  }
+  database_subnet_tags = merge(
+    {
+      "AccessType" = "database"
+    },
+    var.database_subnet_tags
+  )
 
   database_route_table_tags = {
     "AccessType" = "database"

@@ -660,3 +660,27 @@ variable "lg_filters" {
   }))
   default = {}
 }
+
+variable "private_subnet_tags" {
+  description = "List of tags to add to private subnets"
+  type        = map(any)
+  default     = {}
+}
+
+variable "public_subnet_tags" {
+  description = "List of tags to add to public subnets"
+  type        = map(any)
+  default     = {}
+}
+
+variable "database_subnet_tags" {
+  description = "List of tags to add to database subnets"
+  type        = map(any)
+  default     = {}
+}
+
+variable "intra_subnet_tags" {
+  description = "List of tags to add to intra subnets"
+  type        = map(any)
+  default     = {}
+}
