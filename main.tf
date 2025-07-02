@@ -14,7 +14,7 @@ locals {
   vpc_tags = merge(var.vpc_tags)
 
   vpc_flow_log_name_chunks = split(":", module.vpc.vpc_flow_log_destination_arn)
-  vpc_flow_log_name = local.vpc_flow_log_name_chunks[length(local.vpc_flow_log_name_chunks) - 1]
+  vpc_flow_log_name        = local.vpc_flow_log_name_chunks[length(local.vpc_flow_log_name_chunks) - 1]
 }
 
 # creates the elastic IPs which the NAT gateways are allocated
@@ -81,7 +81,7 @@ module "vpc" {
     {
       "kubernetes.io/role/internal-elb" = "1",
       "AccessType"                      = "internet egress"
-    }
+    },
     var.private_subnet_tags
   )
 
