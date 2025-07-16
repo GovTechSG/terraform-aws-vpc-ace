@@ -27,7 +27,7 @@ resource "aws_eip" "nat" {
 
 # virtual private cloud creator
 module "vpc" {
-  source = "github.com/GovTechSG/terraform-aws-vpc-forked?ref=v4.0.6"
+  source = "git::https://github.com/GovTechSG/terraform-aws-vpc-forked?ref=chore/update-v.6.0.0"
 
   # meta data
   name                  = var.vpc_name
