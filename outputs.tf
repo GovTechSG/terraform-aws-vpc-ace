@@ -192,6 +192,11 @@ output "https_security_group_id" {
   value       = aws_security_group.allow_443.id
 }
 
+output "egress_security_group_id" {
+  description = "The ID of the security group to all traffic"
+  value       = aws_security_group.allow_all_egress.id
+}
+
 output "public_network_acl_id" {
   description = "The ID of the public network ACL"
   value       = local.create_public && !var.public_dedicated_network_acl ? aws_network_acl.public[0].id : ""
