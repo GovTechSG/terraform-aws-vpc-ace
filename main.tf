@@ -14,7 +14,7 @@ locals {
   vpc_tags = merge(var.vpc_tags)
 
   vpc_flow_log_name_chunks = split(":", module.vpc.vpc_flow_log_destination_arn)
-  vpc_flow_log_name = local.vpc_flow_log_name_chunks[length(local.vpc_flow_log_name_chunks) - 1]
+  vpc_flow_log_name        = local.vpc_flow_log_name_chunks[length(local.vpc_flow_log_name_chunks) - 1]
 }
 
 # creates the elastic IPs which the NAT gateways are allocated
@@ -41,6 +41,7 @@ module "vpc" {
 
   public_subnet_tags = merge(
     var.eks_cluster_tags,
+    var.eks_public_subnet_tags,
     {
       "kubernetes.io/role/elb" = "1",
       "AccessType"             = "internet ingress/egress"
@@ -77,6 +78,7 @@ module "vpc" {
 
   private_subnet_tags = merge(
     var.eks_cluster_tags,
+    var.eks_private_subnet_tags,
     {
       "kubernetes.io/role/internal-elb" = "1",
       "AccessType"                      = "internet egress"
@@ -91,6 +93,7 @@ module "vpc" {
 
   intra_subnet_tags = merge(
     var.eks_cluster_tags,
+    var.eks_intra_subnet_tags,
     {
       "AccessType" = "intranet"
     }
@@ -237,7 +240,7 @@ resource "aws_security_group" "allow_http_https_outgoing" {
 }
 
 #######################
-# Flow Logs 
+# Flow Logs
 #######################
 
 resource "aws_cloudwatch_log_subscription_filter" "flow_log" {

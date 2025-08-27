@@ -204,6 +204,46 @@ As this module was originalyl intended to create 1 vpc with 1 cidr range for man
 > terragrunt import 'module.vpc.aws_vpc_ipv4_cidr_block_association.this[0]' vpc-cidr-assoc-xxx
 > terragrunt import 'module.vpc.aws_internet_gateway.this[0]' igw-xxx
 
+### EKS Subnet-Specific Tags
+
+With the introduction of subnet-specific EKS tag variables, you can now apply different tags to different subnet types. This is useful when you need specific tags for different subnet types for EKS cluster requirements or organizational purposes.
+
+```hcl
+module "vpc" {
+  vpc_cidr = "172.1.1.0/25"
+
+  # General EKS cluster tags applied to all subnets
+  eks_cluster_tags = {
+    "kubernetes.io/cluster/my-cluster" = "shared"
+  }
+
+  # Public subnet specific EKS tags
+  eks_public_subnet_tags = {
+    "kubernetes.io/cluster/my-cluster" = "owned"
+    "Environment" = "production"
+  }
+
+  # Private subnet specific EKS tags
+  eks_private_subnet_tags = {
+    "kubernetes.io/cluster/my-cluster" = "owned"
+    "Tier" = "application"
+  }
+
+  # Intra subnet specific EKS tags
+  eks_intra_subnet_tags = {
+    "Tier" = "management"
+  }
+
+  public_subnets = ["172.1.1.0/27"]
+  private_subnets = ["172.1.1.32/27"]
+  intranet_subnets = ["172.1.1.64/27"]
+  database_subnets = ["172.1.1.96/27"]
+  number_of_azs = 2
+}
+```
+
+**Note**: The subnet-specific tags are merged with the general `eks_cluster_tags`, so you don't need to repeat common tags across all subnet types.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -359,6 +399,10 @@ No requirements.
 | <a name="input_default_vpc_name"></a> [default\_vpc\_name](#input\_default\_vpc\_name) | Name to be used on the Default VPC | `string` | `null` | no |
 | <a name="input_default_vpc_tags"></a> [default\_vpc\_tags](#input\_default\_vpc\_tags) | Additional tags for the Default VPC | `map(string)` | `{}` | no |
 | <a name="input_eks_cluster_tags"></a> [eks\_cluster\_tags](#input\_eks\_cluster\_tags) | List of tags that EKS will create, but also added to VPC for persistency across terraform applies | `map(any)` | `{}` | no |
+| <a name="input_eks_database_subnet_tags"></a> [eks\_database\_subnet\_tags](#input\_eks\_database\_subnet\_tags) | Additional EKS-specific tags to apply to database subnets only | `map(any)` | `{}` | no |
+| <a name="input_eks_intra_subnet_tags"></a> [eks\_intra\_subnet\_tags](#input\_eks\_intra\_subnet\_tags) | Additional EKS-specific tags to apply to intra subnets only | `map(any)` | `{}` | no |
+| <a name="input_eks_private_subnet_tags"></a> [eks\_private\_subnet\_tags](#input\_eks\_private\_subnet\_tags) | Additional EKS-specific tags to apply to private subnets only | `map(any)` | `{}` | no |
+| <a name="input_eks_public_subnet_tags"></a> [eks\_public\_subnet\_tags](#input\_eks\_public\_subnet\_tags) | Additional EKS-specific tags to apply to public subnets only | `map(any)` | `{}` | no |
 | <a name="input_enable_flow_log"></a> [enable\_flow\_log](#input\_enable\_flow\_log) | Whether or not to enable VPC Flow Logs | `bool` | `false` | no |
 | <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Should be true if you want to provision NAT Gateways for each of your private networks | `bool` | `true` | no |
 | <a name="input_firewall_dedicated_network_acl"></a> [firewall\_dedicated\_network\_acl](#input\_firewall\_dedicated\_network\_acl) | Whether to use dedicated network ACL (not default) and custom rules for firewall subnets | `bool` | `false` | no |
