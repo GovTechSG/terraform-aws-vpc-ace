@@ -4,6 +4,18 @@ variable "create_vpc" {
   default     = true
 }
 
+variable "create_allow_443_security_group" {
+  description = "Controls if the allow_443 security group should be created"
+  type        = bool
+  default     = true
+}
+
+variable "create_allow_http_https_outgoing_security_group" {
+  description = "Controls if the allow_http_https_outgoing security group should be created"
+  type        = bool
+  default     = true
+}
+
 variable "vpc_name" {
   description = "Name of VPC"
   type        = string

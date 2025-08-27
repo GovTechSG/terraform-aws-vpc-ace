@@ -178,6 +178,8 @@ module "vpc" {
 # Security Groups
 #######################
 resource "aws_security_group" "allow_443" {
+  count = var.create_allow_443_security_group ? 1 : 0
+
   name        = "${var.vpc_name}-${local.cidr_ip}-allow-443"
   description = "Allow port 443 traffic to and from VPC cidr range"
   vpc_id      = module.vpc.vpc_id
@@ -202,6 +204,8 @@ resource "aws_security_group" "allow_443" {
 }
 
 resource "aws_security_group" "allow_http_https_outgoing" {
+  count = var.create_allow_http_https_outgoing_security_group ? 1 : 0
+
   name        = "${var.vpc_name}-${local.cidr_ip}-allow-http-https-outgoing"
   description = "Allow port all HTTP(S) traffic outgoing"
   vpc_id      = module.vpc.vpc_id
