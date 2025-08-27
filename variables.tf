@@ -55,6 +55,24 @@ variable "eks_cluster_tags" {
   default     = {}
 }
 
+variable "eks_public_subnet_tags" {
+  description = "Additional EKS-specific tags to apply to public subnets only"
+  type        = map(any)
+  default     = {}
+}
+
+variable "eks_private_subnet_tags" {
+  description = "Additional EKS-specific tags to apply to private subnets only"
+  type        = map(any)
+  default     = {}
+}
+
+variable "eks_intra_subnet_tags" {
+  description = "Additional EKS-specific tags to apply to intra subnets only"
+  type        = map(any)
+  default     = {}
+}
+
 variable "number_of_azs" {
   description = "Determines number of availability zones to use in the region"
   default     = 2
