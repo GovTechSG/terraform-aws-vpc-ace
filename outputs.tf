@@ -189,7 +189,12 @@ output "default_security_group_id" {
 
 output "https_security_group_id" {
   description = "The ID of the security group to all traffic from 443"
-  value       = aws_security_group.allow_443.id
+  value       = var.create_allow_443_security_group ? aws_security_group.allow_443[0].id : null
+}
+
+output "http_https_outgoing_security_group_id" {
+  description = "The ID of the security group to allow HTTP/HTTPS outgoing traffic"
+  value       = var.create_allow_http_https_outgoing_security_group ? aws_security_group.allow_http_https_outgoing[0].id : null
 }
 
 output "public_network_acl_id" {
